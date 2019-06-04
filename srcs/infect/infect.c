@@ -6,13 +6,11 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:37:20 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/04 03:53:12 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/04 04:17:52 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>//TMP
-
 inline bool		infect(const char *file)
 {
-	printf("[%s]\n", file);//TMP
+	
 }
