@@ -14,7 +14,12 @@
 
 NAME = famine
 
-SRC = famine.c
+SRC =	main.c \
+	famine.c \
+	utils.c \
+	file_iterator.c \
+	infect/infect.c \
+	infect/endian.c
 
 CC = clang
 
@@ -68,13 +73,13 @@ ${NAME}: ${OBJ}
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.s
 	@echo ${Y}Compiling [$@]...${X}
-	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/elf64
+	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/infect
 	@${AS} ${ASFLAGS} -o $@ $<
 	@printf ${UP}${CUT}
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.c
 	@echo ${Y}Compiling [$@]...${X}
-	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/elf64
+	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/infect
 	@${CC} ${CFLAGS} ${LDFLAGS} -c -o $@ $<
 	@printf ${UP}${CUT}
 

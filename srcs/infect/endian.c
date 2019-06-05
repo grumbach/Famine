@@ -10,40 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "woody_woodpacker.h"
+#include "infect.h"
+#include <stdint.h>
 
-static bool			big_endian = false;
-
-void				endian_big_mode(bool is_big_endian)
+inline uint16_t	endian_2_noswap(uint16_t n)
 {
-	big_endian = is_big_endian;
-}
-
-uint16_t			endian_2(uint16_t n)
-{
-	if (big_endian)
-		return ((n >> 8) | (n << 8));
 	return (n);
 }
 
-uint32_t			endian_4(uint32_t n)
+inline uint16_t	endian_2_swap(uint16_t n)
 {
-	if (big_endian)
-		return ((n >> 24) | ((n & 0xff0000) >> 8) | \
-			((n & 0xff00) << 8) | (n << 24));
+	return ((n >> 8) | (n << 8));
+}
+
+inline uint32_t	endian_4_noswap(uint32_t n)
+{
 	return (n);
 }
 
-uint64_t			endian_8(uint64_t n)
+inline uint32_t	endian_4_swap(uint32_t n)
 {
-	if (big_endian)
-		return ((n & 0xff00000000000000) >> 56 \
-			| (n & 0x00ff000000000000) >> 40 \
-			| (n & 0x0000ff0000000000) >> 24 \
-			| (n & 0x000000ff00000000) >> 8 \
-			| (n & 0x00000000ff000000) << 8 \
-			| (n & 0x0000000000ff0000) << 24 \
-			| (n & 0x000000000000ff00) << 40 \
-			| (n & 0x00000000000000ff) << 56);
+	return ((n >> 24) | ((n & 0xff0000) >> 8) | \
+		((n & 0xff00) << 8) | (n << 24));
+}
+
+inline uint64_t	endian_8_noswap(uint64_t n)
+{
 	return (n);
+}
+
+inline uint64_t	endian_8_swap(uint64_t n)
+{
+	return ((n & 0xff00000000000000) >> 56 \
+		| (n & 0x00ff000000000000) >> 40 \
+		| (n & 0x0000ff0000000000) >> 24 \
+		| (n & 0x000000ff00000000) >> 8 \
+		| (n & 0x00000000ff000000) << 8 \
+		| (n & 0x0000000000ff0000) << 24 \
+		| (n & 0x000000000000ff00) << 40 \
+		| (n & 0x00000000000000ff) << 56);
 }
