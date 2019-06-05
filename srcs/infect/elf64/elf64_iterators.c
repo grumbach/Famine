@@ -12,7 +12,7 @@
 
 #include "elf64_private.h"
 
-bool	foreach_phdr(t_safe_accessor safe, f_iter_callback callback)
+bool	foreach_phdr(t_safe_accessor safe, f_iter_callback callback, void *data)
 {
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 
@@ -34,13 +34,13 @@ bool	foreach_phdr(t_safe_accessor safe, f_iter_callback callback)
 		size_t	elf64_seg_hdr = (size_t)(*segments)[phnum];
 		size_t	offset        = (elf64_seg_hdr - (size_t)elf64_hdr);
 
-		if (!callback(safe, offset))
+		if (!callback(safe, offset, data))
 			return (errors(ERR_THROW, "foreach_phdr"));
 	}
 	return (true);
 }
 
-bool	foreach_shdr(f_safe_accessor safe, f_iter_callback callback)
+bool	foreach_shdr(f_safe_accessor safe, f_iter_callback callback, void *data)
 {
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 
@@ -62,7 +62,7 @@ bool	foreach_shdr(f_safe_accessor safe, f_iter_callback callback)
 		size_t	elf64_section_hdr = (size_t)(*sections)[shnum];
 		size_t	offset = (elf64_section_hdr - (size_t)elf64_hdr);
 
-		if (!callback(safe, offset))
+		if (!callback(safe, offset, data))
 			return (errors(ERR_THROW, "foreach_shdr"));
 	}
 	return (true);
