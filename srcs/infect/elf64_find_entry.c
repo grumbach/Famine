@@ -16,7 +16,7 @@ static struct entry	*stored_entry;
 static Elf64_Ehdr	*safe_elf64_hdr;
 static Elf64_Addr	e_entry;
 
-static bool	find_entry_shdr(f_safe_accessor safe, const size_t offset)
+static bool	find_entry_shdr(struct safe_pointer info, const size_t offset)
 {
 	Elf64_Shdr		*elf64_sect_hdr = safe(offset, sizeof(Elf64_Shdr));
 
@@ -45,7 +45,7 @@ static bool	find_entry_shdr(f_safe_accessor safe, const size_t offset)
 	return true;
 }
 
-static bool	find_entry_phdr(f_safe_accessor safe, const size_t offset)
+static bool	find_entry_phdr(struct safe_pointer info, const size_t offset)
 {
 	Elf64_Phdr		*elf64_seg_hdr = safe(offset, sizeof(Elf64_Phdr));
 
@@ -59,7 +59,7 @@ static bool	find_entry_phdr(f_safe_accessor safe, const size_t offset)
 	return true;
 }
 
-bool		find_entry(struct entry *original_entry, f_safe_accessor safe)
+bool		find_entry(struct entry *original_entry, struct safe_pointer info)
 {
 	safe_elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 	if (!safe_elf64_hdr) return (errors(ERR_CORRUPT, "missing elf64_hdr"));

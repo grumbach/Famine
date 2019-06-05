@@ -18,7 +18,7 @@ static struct
 	size_t	end_last_sect;
 }		closure;
 
-static bool	shift_phdr_position(f_safe_accessor safe, const size_t offset)
+static bool	shift_phdr_position(struct safe_pointer info, const size_t offset)
 {
 	Elf64_Phdr	*phdr = safe(offset, sizeof(Elf64_Phdr));
 	if (phdr == NULL) return errors(ERR_CORRUPT, "bad phdr offset");
@@ -33,7 +33,7 @@ static bool	shift_phdr_position(f_safe_accessor safe, const size_t offset)
 	return true;
 }
 
-static bool	shift_shdr_position(f_safe_accessor safe, const size_t offset)
+static bool	shift_shdr_position(struct safe_pointer info, const size_t offset)
 {
 	Elf64_Shdr	*shdr = safe(offset, sizeof(Elf64_Shdr));
 	if (shdr == NULL) return errors(ERR_CORRUPT, "bad shdr offset");

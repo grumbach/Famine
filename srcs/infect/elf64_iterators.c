@@ -6,13 +6,13 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 08:11:33 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/04 05:07:16 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/05 06:47:04 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "elf64_private.h"
 
-bool	foreach_phdr(t_safe_accessor safe, f_iter_callback callback)
+bool	foreach_phdr(struct safe_pointer info, f_iter_callback callback, void *data)
 {
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 
@@ -40,7 +40,7 @@ bool	foreach_phdr(t_safe_accessor safe, f_iter_callback callback)
 	return (true);
 }
 
-bool	foreach_shdr(f_safe_accessor safe, f_iter_callback callback)
+bool	foreach_shdr(struct safe_pointer info, f_iter_callback callback, void *data)
 {
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 
