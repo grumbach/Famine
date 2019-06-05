@@ -19,7 +19,7 @@
 */
 
 __warn_unused_result
-inline void		*safe(const size_t offset, const size_t size, \
+inline void		*safe_accessor(const size_t offset, const size_t size, \
 				const struct safe_pointer info)
 {
 	if (offset + size > info.filesize || offset + size < offset)

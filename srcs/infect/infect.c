@@ -46,7 +46,7 @@ inline void		infect_if_candidate(const char *file)
 	struct famine	food;
 	set_endian(&food, e_ident[EI_DATA] == ELFDATA2MSB);
 
-	printf("[%s]\n", file);
+	// printf("[%s]\n", file);
 
 	close(fd);
 }

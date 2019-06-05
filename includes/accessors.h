@@ -17,7 +17,7 @@
 ** Bright facade for safe accessors
 */
 
-static struct	safe_pointer
+struct	safe_pointer
 {
 	void	*ptr;
 	size_t	filesize;
@@ -27,13 +27,13 @@ static struct	safe_pointer
 ** Dark side of the safe accessors...
 */
 
-# define safe(ptr, size)	(safe(ptr, size, info))
+# define safe(ptr, size)	(safe_accessor(ptr, size, info))
 
 /*
 ** Functions
 */
 
-void			*safe(const size_t offset, const size_t size, \
+void			*safe_accessor(const size_t offset, const size_t size, \
 				const struct safe_pointer info);
 
 /*

