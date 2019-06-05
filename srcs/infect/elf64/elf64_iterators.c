@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "elf64_private.h"
+#include "infect.h"
 
-bool	foreach_phdr(t_safe_accessor safe, f_iter_callback callback, void *data)
+bool	foreach_phdr(f_safe_accessor safe, f_iter_callback callback, void *data)
 {
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 
