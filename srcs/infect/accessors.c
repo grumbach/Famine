@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   original_safe.c                                    :+:      :+:    :+:   */
+/*   accessors.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/22 16:40:47 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/04 05:44:27 by agrumbac         ###   ########.fr       */
+/*   Created: 2019/06/05 06:32:25 by agrumbac          #+#    #+#             */
+/*   Updated: 2019/06/05 06:38:36 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "accessors.h"
+
 /*
-** original_safe()
-** returns a safe read-only pointer to the original file
+** safe()
+** returns a safe pointer
 ** returns NULL if requested memory is out of range
 */
 
 __warn_unused_result
-inline void		*original_safe(const size_t offset, const size_t size, \
+inline void		*safe(const size_t offset, const size_t size, \
 				const struct safe_pointer info)
 {
 	if (offset + size > info.filesize || offset + size < offset)
@@ -26,7 +28,7 @@ inline void		*original_safe(const size_t offset, const size_t size, \
 }
 
 __warn_unused_result
-inline t_safe_accessor	read_file(const char *filename)
+inline struct safe_pointer	read_file(const char *filename)
 {
 	void		*ptr;
 	struct stat	buf;
@@ -43,14 +45,10 @@ inline t_safe_accessor	read_file(const char *filename)
 	if (close(fd))
 		return (errors(ERR_SYS, "close failed"));
 
-	t_safe_accessor	accessor =
+	struct safe_pointer	accessor =
 	{
-		.access = &original_safe,
-		.info   =
-		{
-			.ptr      = ptr,
-			.filesize = buf.st_size
-		}
+		.ptr      = ptr,
+		.filesize = buf.st_size
 	};
 	return (accessor);
 }
@@ -62,5 +60,51 @@ inline bool		free_file(struct safe_pointer info)
 		if (munmap(info.ptr, info.filesize))
 			return errors(ERR_SYS, "munmap failed");
 	}
+	return (true);
+}
+
+
+__warn_unused_result
+inline void		*clone_safe(const size_t offset, const size_t size, \
+				const struct safe_pointer info)
+{
+	if (offset + size > info.filesize || offset + size < offset)
+		return (NULL);
+	return (info.ptr + offset);
+}
+
+__warn_unused_result
+inline struct safe_pointer	alloc_clone(const size_t original_filesize)
+{
+	struct safe_pointer = ;
+	accessor->filesize = original_filesize;
+	accessor->ptr = malloc(accessor->filesize + MAX_EST_SIZE);
+
+	if (accessor->ptr == NULL)
+		return (errors(ERR_SYS, "while allocating clone"));
+
+	return (true);
+}
+
+void		free_clone(void)
+{
+	free(accessor->ptr);
+}
+
+__warn_unused_result
+bool		write_clone_file(void)
+{
+	int	fd = open(OUTPUT_FILENAME, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
+
+	if (fd == -1)
+		return errors(ERR_SYS, "failed creating file " OUTPUT_FILENAME);
+
+	if (write(fd, accessor->ptr, accessor->filesize) == -1)
+	{
+		close(fd);
+		return errors(ERR_SYS, "failed writing to " OUTPUT_FILENAME);
+	}
+
+	close(fd);
 	return (true);
 }

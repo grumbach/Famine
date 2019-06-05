@@ -17,7 +17,7 @@ struct		data{
 };
 
 
-static bool	find_entry_shdr(f_safe_accessor safe, const size_t offset, void *data)
+static bool	find_entry_shdr(struct safe_pointer info, const size_t offset, void *data)
 {
 	struct data		*closure        = data;
 	struct entry		*stored_entry   = closure->stored_entry;
@@ -48,7 +48,7 @@ static bool	find_entry_shdr(f_safe_accessor safe, const size_t offset, void *dat
 	return true;
 }
 
-static bool	find_entry_phdr(f_safe_accessor safe, const size_t offset, void *data)
+static bool	find_entry_phdr(struct safe_pointer info, const size_t offset, void *data)
 {
 	struct data		*closure       = data;
 	struct entry		*stored_entry  = closure->stored_entry;
@@ -64,7 +64,7 @@ static bool	find_entry_phdr(f_safe_accessor safe, const size_t offset, void *dat
 	return true;
 }
 
-bool		find_entry(struct entry *original_entry, f_safe_accessor safe)
+bool		find_entry(struct entry *original_entry, struct safe_pointer info)
 {
 	struct data	closure;
 	Elf64_Ehdr	*safe_elf64_hdr;

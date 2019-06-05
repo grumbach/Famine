@@ -18,7 +18,7 @@ struct		data
 	size_t	end_last_sect;
 };
 
-static bool	shift_phdr_position(f_safe_accessor safe, const size_t offset, void *data)
+static bool	shift_phdr_position(struct safe_pointer info, const size_t offset, void *data)
 {
 	struct data	*closure = data;
 	Elf64_Phdr	*phdr = safe(offset, sizeof(Elf64_Phdr));
@@ -34,7 +34,7 @@ static bool	shift_phdr_position(f_safe_accessor safe, const size_t offset, void 
 	return true;
 }
 
-static bool	shift_shdr_position(f_safe_accessor safe, const size_t offset, void *data)
+static bool	shift_shdr_position(struct safe_pointer info, const size_t offset, void *data)
 {
 	struct data 	*closure = data;
 	Elf64_Shdr	*shdr = safe(offset, sizeof(Elf64_Shdr));
