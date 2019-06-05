@@ -12,11 +12,7 @@
 
 #include "infect.h"
 
-<<<<<<< HEAD:srcs/infect/elf64/elf64_iterators.c
-bool	foreach_phdr(f_safe_accessor safe, f_iter_callback callback, void *data)
-=======
 bool	foreach_phdr(struct safe_pointer info, f_iter_callback callback, void *data)
->>>>>>> origin/safe_accessors:srcs/infect/elf64_iterators.c
 {
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 
@@ -44,11 +40,7 @@ bool	foreach_phdr(struct safe_pointer info, f_iter_callback callback, void *data
 	return (true);
 }
 
-<<<<<<< HEAD:srcs/infect/elf64/elf64_iterators.c
-bool	foreach_shdr(f_safe_accessor safe, f_iter_callback callback, void *data)
-=======
 bool	foreach_shdr(struct safe_pointer info, f_iter_callback callback, void *data)
->>>>>>> origin/safe_accessors:srcs/infect/elf64_iterators.c
 {
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 

