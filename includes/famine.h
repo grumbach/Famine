@@ -13,10 +13,11 @@
 #ifndef FAMINE_H
 # define FAMINE_H
 
-#include <limits.h>
+#include <stdbool.h>
 
 void		famine();
-bool		infect(const char *file);
+void		virus();
 void		infect_files_in(const char *path);
+void		infect_if_candidate(const char *file);
 
 #endif

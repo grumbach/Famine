@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "famine.h"
 #include <stdio.h>//TMP
 
-inline bool		infect(const char *file)
+inline void		infect_if_candidate(const char *file)
 {
 	printf("[%s]\n", file);//TMP
 }

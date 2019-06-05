@@ -14,7 +14,11 @@
 
 NAME = famine
 
-SRC = famine.c
+SRC =	famine.c \
+	file_iterator.c \
+	infect.c \
+	main.c \
+	utils.c
 
 CC = clang
 
