@@ -68,12 +68,12 @@ bool		find_entry(struct entry *original_entry, f_safe_accessor safe)
 	bzero(original_entry, sizeof(*original_entry));
 	stored_entry = original_entry;
 
-	if (!foreach_phdr(safe, find_entry_phdr, void))
+	if (!foreach_phdr(safe, find_entry_phdr, NULL))
 		return (errors(ERR_THROW, "find_entry"));
 	if (!original_entry->safe_phdr)
 		return (errors(ERR_CORRUPT, "missing entry segment"));
 
-	if (!foreach_shdr(safe, find_entry_shdr, void))
+	if (!foreach_shdr(safe, find_entry_shdr, NULL))
 		return (errors(ERR_THROW, "find_entry"));
 	if (!original_entry->safe_shdr)
 		return (errors(ERR_CORRUPT, "missing entry section"));
