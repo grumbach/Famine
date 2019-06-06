@@ -6,7 +6,7 @@
 #    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/10 17:19:11 by agrumbac          #+#    #+#              #
-#    Updated: 2019/06/04 00:21:37 by agrumbac         ###   ########.fr        #
+#    Updated: 2019/06/06 04:54:20 by agrumbac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,22 +14,23 @@
 
 NAME = famine
 
-SRC =	main.c \
-	utils.c \
-	famine.c \
-	file_iterator.c \
-	infect/infect.c \
-	infect/endian.c \
-	infect/encrypt.s \
-	infect/decrypt.s \
-	infect/accessors.c \
-	infect/elf64_packer.c \
-	infect/elf64_payload.s \
-	infect/elf64_iterators.c \
-	infect/elf64_find_entry.c \
-	infect/elf64_setup_payload.c \
-	infect/elf64_copy_to_clone.c \
-	infect/elf64_adjust_refernces.c \
+SRC =	main.c                        \
+	famine.c                      \
+	file_iterator.c               \
+	syscall.c                     \
+	utils.c                       \
+	infect/accessors.c            \
+	infect/adjust_references.c    \
+	infect/copy_to_clone.c        \
+	infect/decrypt.s              \
+	infect/encrypt.s              \
+	infect/endian.c               \
+	infect/find_entry.c           \
+	infect/infect.c               \
+	infect/iterators.c            \
+	infect/packer.c               \
+	infect/payload.s              \
+	infect/setup_payload.c
 
 CC = clang
 

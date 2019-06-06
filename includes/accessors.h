@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 04:47:10 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/05 06:47:12 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/06 04:56:24 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,25 @@ struct	safe_pointer
 # define safe(ptr, size)	(safe_accessor(ptr, size, info))
 
 /*
-** Functions
+** any accessor
 */
 
 void			*safe_accessor(const size_t offset, const size_t size, \
 				const struct safe_pointer info);
+bool			free_accessor(struct safe_pointer info);
 
 /*
 ** original
 */
 
-struct safe_pointer	read_file(const char *filename);
-bool			free_file(const struct safe_pointer info);
+struct safe_pointer	original_accessor(const char *filename);
 
 /*
 ** clone
 */
 
-struct safe_pointer	alloc_clone(const size_t original_filesize);
-bool			write_clone_file(const struct safe_pointer info);
-void			free_clone(const struct safe_pointer accessor);
+struct safe_pointer	clone_accessor(const size_t original_filesize);
+bool			write_clone_file(const struct safe_pointer accessor, \
+				const char *filename);
 
 #endif
