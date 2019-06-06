@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_payload.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 00:10:33 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/06 04:52:24 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/06 20:47:17 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ struct payload_constants
 
 static void	generate_key(char *buffer, size_t len)
 {
-	for (size_t i = 0; i < len; i++)
-		buffer[i] = ft_rand();
+	ft_getrandom(buffer, len);
 }
 
 static void	init_constants(struct payload_constants *constants, \
