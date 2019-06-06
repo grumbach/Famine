@@ -10,8 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "elf64_private.h"
+#include <stdint.h>
+#include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
+#include <linux/elf.h>
 
 /*
 **  Elf64_packer memory overview
@@ -71,16 +74,17 @@ static void	generate_key(char *buffer, size_t len)
 }
 
 static void	init_constants(struct payload_constants *constants, \
-			const struct entry *original_entry)
+			const struct entry *original_entry, \
+			const struct endians_pointer endians)
 {
 	memcpy(constants->key, SECRET_SIGNATURE, SECRET_LEN);
 	generate_key((char *)constants->key + SECRET_LEN, 16 - SECRET_LEN);
 
 	const size_t		end_of_last_section = original_entry->end_of_last_section;
-	const Elf64_Off		p_offset  = endian_8(original_entry->safe_phdr->p_offset);
-	const Elf64_Xword	p_memsz   = endian_8(original_entry->safe_phdr->p_memsz);
-	const Elf64_Off		sh_offset = endian_8(original_entry->safe_shdr->sh_offset);
-	const size_t		sh_size   = endian_8(original_entry->safe_shdr->sh_size);
+	const Elf64_Off		p_offset  = endians.endian_8(original_entry->safe_phdr->p_offset);
+	const Elf64_Xword	p_memsz   = endians.endian_8(original_entry->safe_phdr->p_memsz);
+	const Elf64_Off		sh_offset = endians.endian_8(original_entry->safe_shdr->sh_offset);
+	const size_t		sh_size   = endians.endian_8(original_entry->safe_shdr->sh_size);
 
 	constants->relative_pt_load_address = end_of_last_section - p_offset;
 	constants->pt_load_size             = p_memsz;
@@ -89,14 +93,14 @@ static void	init_constants(struct payload_constants *constants, \
 	constants->text_size                = sh_size;
 }
 
-bool		setup_payload(const struct entry *original_entry)
+bool		setup_payload(const struct entry *original_entry, const struct endians_pointer endians)
 {
 	struct payload_constants	constants;
 
-	init_constants(&constants, original_entry);
+	init_constants(&constants, original_entry, endians);
 
 	const size_t	payload_size = end_payload - begin_payload;
-	const size_t	text_size    = endian_8(original_entry->safe_shdr->sh_size);
+	const size_t	text_size    = endians.endian_8(original_entry->safe_shdr->sh_size);
 	const size_t	payload_off  = original_entry->end_of_last_section;
 	const size_t	text_off     = payload_off - constants.relative_text_address;
 
@@ -105,7 +109,7 @@ bool		setup_payload(const struct entry *original_entry)
 	void	*text_location       = clone_safe(text_off, text_size);
 
 	if (!payload_location || !constants_location || !text_location)
-		return (errors(ERR_CORRUPT, "wildly unreasonable"));
+		return (false);
 
 	encrypt(32, text_location, constants.key, text_size);
 	memcpy(payload_location, begin_payload, payload_size);

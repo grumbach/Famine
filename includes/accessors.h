@@ -13,6 +13,16 @@
 #ifndef ACCESSORS_H
 # define ACCESSORS_H
 
+#include <sys/types.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <stdbool.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include "compiler_utils.h"
+
 /*
 ** Bright facade for safe accessors
 */
@@ -49,6 +59,6 @@ bool			free_file(const struct safe_pointer info);
 
 struct safe_pointer	alloc_clone(const size_t original_filesize);
 bool			write_clone_file(const struct safe_pointer info);
-void			free_clone(const struct safe_pointer info);
+void			free_clone(const struct safe_pointer accessor);
 
 #endif

