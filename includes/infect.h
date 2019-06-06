@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 04:27:47 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/06 04:52:36 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/06 05:31:17 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	end_payload(void);
 ** endian
 */
 
+void		set_endian(struct endians_pointer *endians, bool big_mode);
 uint16_t	endian_2_noswap(uint16_t n);
 uint16_t	endian_2_swap(uint16_t n);
 uint32_t	endian_4_noswap(uint32_t n);

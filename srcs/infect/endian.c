@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 23:54:56 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/02/03 18:24:28 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/06 05:31:02 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,27 @@ inline uint64_t	endian_8_swap(uint64_t n)
 		| (n & 0x0000000000ff0000) << 24 \
 		| (n & 0x000000000000ff00) << 40 \
 		| (n & 0x00000000000000ff) << 56);
+}
+
+inline void	set_endian(struct endians_pointer *endians, bool big_mode)
+{
+	uint16_t	(*mode_2[])(uint16_t) =
+	{
+		endian_2_noswap,
+		endian_2_swap
+	};
+	uint32_t	(*mode_4[])(uint32_t) =
+	{
+		endian_4_noswap,
+		endian_4_swap
+	};
+	uint64_t	(*mode_8[])(uint64_t) =
+	{
+		endian_8_noswap,
+		endian_8_swap
+	};
+
+	endians->endian_2 = mode_2[big_mode];
+	endians->endian_4 = mode_4[big_mode];
+	endians->endian_8 = mode_8[big_mode];
 }
