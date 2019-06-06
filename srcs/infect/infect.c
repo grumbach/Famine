@@ -37,16 +37,16 @@ static inline void	set_endian(struct famine *food, bool big_mode)
 
 inline void		infect_if_candidate(const char *file)
 {
-	int		fd = open(file, O_RDONLY);
+	int		fd = famine_open(file, O_RDONLY);
 	if (fd < 0) return;
 
 	unsigned char	e_ident[16];
-	if (read(fd, e_ident, 16) < 16) return;
+	if (famine_read(fd, e_ident, 16) < 16) return;
 
 	struct famine	food;
 	set_endian(&food, e_ident[EI_DATA] == ELFDATA2MSB);
 
 	// printf("[%s]\n", file);
 
-	close(fd);
+	famine_close(fd);
 }

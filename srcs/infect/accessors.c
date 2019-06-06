@@ -32,17 +32,17 @@ inline struct safe_pointer	read_file(const char *filename)
 {
 	void		*ptr;
 	struct stat	buf;
-	int		fd = open(filename, O_RDONLY);
+	int		fd = famine_open(filename, O_RDONLY);
 
 	if (fd < 0)
 		return (errors(ERR_SYS, "open failed"));
-	if (fstat(fd, &buf) < 0)
+	if (famine_fstat(fd, &buf) < 0)
 		return (errors(ERR_SYS, "fstat failed"));
 	if (buf.st_mode & S_IFDIR)
 		return (errors(ERR_USAGE, "can't parse directories"));
-	if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
+	if ((ptr = famine_mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
 		return (errors(ERR_SYS, "mmap failed"));
-	if (close(fd))
+	if (famine_close(fd))
 		return (errors(ERR_SYS, "close failed"));
 
 	struct safe_pointer	accessor =
@@ -57,7 +57,7 @@ inline bool		free_file(struct safe_pointer info)
 {
 	if (info.ptr)
 	{
-		if (munmap(info.ptr, info.filesize))
+		if (famine_munmap(info.ptr, info.filesize))
 			return errors(ERR_SYS, "munmap failed");
 	}
 	return (true);
@@ -94,17 +94,17 @@ void		free_clone(void)
 __warn_unused_result
 bool		write_clone_file(void)
 {
-	int	fd = open(OUTPUT_FILENAME, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
+	int	fd = famine_open(OUTPUT_FILENAME, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
 
 	if (fd == -1)
 		return errors(ERR_SYS, "failed creating file " OUTPUT_FILENAME);
 
-	if (write(fd, accessor->ptr, accessor->filesize) == -1)
+	if (famine_write(fd, accessor->ptr, accessor->filesize) == -1)
 	{
-		close(fd);
+		famine_close(fd);
 		return errors(ERR_SYS, "failed writing to " OUTPUT_FILENAME);
 	}
 
-	close(fd);
+	famine_close(fd);
 	return (true);
 }
