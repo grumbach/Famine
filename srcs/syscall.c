@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 22:22:08 by jfortin           #+#    #+#             */
-/*   Updated: 2019/06/06 04:33:40 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/06 23:19:41 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ inline long	famine_ptrace(_u enum __ptrace_request request,
 	__builtin_unreachable();
 }
 
-inline int	famine_getdents64(_u unsigned int fd, _u struct dirent *dirp, _u unsigned int count)
+inline int	famine_getdents64(_u unsigned int fd, _u struct dirent64 *dirp, _u unsigned int count)
 {
 	wrap_syscall(SYS_GETDENTS64);
 	__builtin_unreachable();

