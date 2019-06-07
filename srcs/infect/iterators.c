@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   elf64_iterators.c                                  :+:      :+:    :+:   */
+/*   iterators.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 08:11:33 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/05 06:47:04 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 01:55:59 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	foreach_phdr(const struct safe_pointer info, const struct endians_pointer e
 {
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 
-	if (elf64_hdr == NULL) return false;
+	if (elf64_hdr == NULL) return errors(ERR_CORRUPT, "no elf64 hdr");
 
 	const Elf64_Off		phoff     = endians.endian_8(elf64_hdr->e_phoff);
 	const Elf64_Half	phentsize = endians.endian_2(elf64_hdr->e_phentsize);
@@ -28,7 +28,7 @@ bool	foreach_phdr(const struct safe_pointer info, const struct endians_pointer e
 	if (phentsize < sizeof(Elf64_Phdr)
 	|| (array_size / phentsize != phnum)
 	|| (!(segments = safe(phoff, array_size))))
-		return false;
+		return errors(ERR_CORRUPT, "invalid segments table");
 
 	while (phnum--)
 	{
@@ -36,7 +36,7 @@ bool	foreach_phdr(const struct safe_pointer info, const struct endians_pointer e
 		size_t	offset        = (elf64_seg_hdr - (size_t)elf64_hdr);
 
 		if (!callback(info, endians, offset, data))
-			return false;
+			return errors(ERR_THROW, "foreach_phdr");
 	}
 	return (true);
 }
@@ -46,7 +46,7 @@ bool	foreach_shdr(const struct safe_pointer info, const struct endians_pointer e
 {
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 
-	if (elf64_hdr == NULL) return false;
+	if (elf64_hdr == NULL) return errors(ERR_CORRUPT, "no elf64 hdr");
 
 	const Elf64_Off		shoff     = endians.endian_8(elf64_hdr->e_shoff);
 	const Elf64_Half	shentsize = endians.endian_2(elf64_hdr->e_shentsize);
@@ -57,7 +57,7 @@ bool	foreach_shdr(const struct safe_pointer info, const struct endians_pointer e
 	if (shentsize < sizeof(Elf64_Shdr)
 	|| (array_size / shentsize != shnum)
 	|| (!(sections = safe(shoff, array_size))))
-		return false;
+		return errors(ERR_CORRUPT, "invalid sections table");
 
 	while (shnum--)
 	{
@@ -65,7 +65,7 @@ bool	foreach_shdr(const struct safe_pointer info, const struct endians_pointer e
 		size_t	offset = (elf64_section_hdr - (size_t)elf64_hdr);
 
 		if (!callback(info, endians, offset, data))
-			return false;
+			return errors(ERR_THROW, "foreach_shdr");
 	}
 	return (true);
 }
