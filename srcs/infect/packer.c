@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 15:42:04 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 02:26:23 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 02:31:33 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static bool	define_shift_amount(const struct endians_pointer endians,
 	if (payload_size < segment_padding)
 	{
 		*shift_amount = 0;
-		return errors(ERR_THROW, "define_shift_amount");
+		return true;
 	}
 
 	const size_t	p_memsz = endians.endian_8(original_entry->safe_phdr->p_memsz);
@@ -79,8 +79,12 @@ static bool	define_shift_amount(const struct endians_pointer endians,
 	*shift_amount = ALIGN(payload_size, SHIFT_ALIGNMENT);
 
 	const size_t	end_padding = (p_memsz % p_align) + *shift_amount;
-      return errors(ERR_USAGE, "insufficient memory padding "
-      "in file (overflow of %lu bytes)", (end_padding - p_align));
+
+	if (end_padding > p_align)
+		return errors(ERR_USAGE, "insufficient memory padding "
+		"in file (overflow of %lu bytes)", (end_padding - p_align));
+
+	return true;
 }
 
 bool		elf64_packer(const struct famine food, size_t original_file_size)
