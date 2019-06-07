@@ -26,7 +26,7 @@ static bool	shift_phdr_position(struct safe_pointer info, \
 	struct data	*closure = data;
 	Elf64_Phdr	*phdr    = safe(offset, sizeof(Elf64_Phdr));
 #ifdef DEBUG
-	char		e[] = {'b','a','d',' ','p','h','d','r',' ','o','f','f','s','e','t','\0'};
+	char		e[] = {'2','1','\0'};
 #endif
 	if (phdr == NULL) return errors(ERR_CORRUPT, e);
 
@@ -47,7 +47,7 @@ static bool	shift_shdr_position(struct safe_pointer info, \
 	struct data 	*closure = data;
 	Elf64_Shdr	*shdr    = safe(offset, sizeof(Elf64_Shdr));
 #ifdef DEBUG
-	char		e[] = {'b','a','d',' ','s','h','d','r',' ','o','f','f','s','e','t','\0'};
+	char		e[] = {'2','2','\0'};
 #endif
 	if (shdr == NULL) return errors(ERR_CORRUPT, e);
 
@@ -101,8 +101,8 @@ bool		adjust_references(const struct safe_pointer info, \
 
 	Elf64_Ehdr	*elf_hdr = safe(0, sizeof(Elf64_Ehdr));
 #ifdef DEBUG
-	char		e1[] = {'h','d','r',' ','c','o','r','r','u','p','t','e','d','\0'};
-	char		e2[] = {'a','d','j','u','s','t','_','r','e','f','\0'};
+	char		e1[] = {'2','3','\0'};
+	char		e2[] = {'2','4','\0'};
 #endif
 	if (elf_hdr == NULL) return errors(ERR_CORRUPT, e1);
 

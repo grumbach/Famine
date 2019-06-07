@@ -28,7 +28,7 @@ static bool	find_entry_shdr(struct safe_pointer info, const struct endians_point
 	Elf64_Shdr		*elf64_sect_hdr = safe(offset, sizeof(Elf64_Shdr));
 
 #ifdef DEBUG
-	char			e[] = {'b','a','d',' ','s','h','d','r',' ','o','f','f','s','e','t','\0'};
+	char			e[] = {'5','1','\0'};
 #endif
 	if (!elf64_sect_hdr) return errors(ERR_CORRUPT, e);
 
@@ -63,7 +63,7 @@ static bool	find_entry_phdr(struct safe_pointer info, const struct endians_point
 	Elf64_Phdr		*elf64_seg_hdr = safe(offset, sizeof(Elf64_Phdr));
 
 #ifdef DEBUG
-	char			e[] = {'b','a','d',' ','p','h','d','r',' ','o','f','f','s','e','t','\0'};
+	char			e[] = {'5','2','\0'};
 #endif
 
 	if (!elf64_seg_hdr) return errors(ERR_CORRUPT, e);
@@ -82,11 +82,11 @@ bool		find_entry(struct entry *original_entry, struct safe_pointer info,
 	struct data	closure;
 	Elf64_Ehdr	*safe_elf64_hdr;
 #ifdef DEBUG
-	char		e1[] = {'h','d','r',' ','c','o','r','r','u','p','t','e','d','\0'};
-	char		e2[] = {'f','i','n','d','_','e','n','t','r','y','\0'};
-	char		e3[] = {'m','i','s','s',' ','e','n','t','r','y',' ','s','e','g','\0'};
-	char		e4[] = {'m','i','s','s',' ','e','n','t','r','y',' ','s','e','c','\0'};
-	char		e5[] = {'e','n','t','r','y',' ','n','o',' ','i','n',' ','s','e','g','\0'};
+	char		e1[] = {'5','3','\0'};
+	char		e2[] = {'5','4','\0'};
+	char		e3[] = {'5','5','\0'};
+	char		e4[] = {'5','6','\0'};
+	char		e5[] = {'5','7','\0'};
 #endif
 
 	safe_elf64_hdr = safe(0, sizeof(Elf64_Ehdr));

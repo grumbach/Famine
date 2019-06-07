@@ -104,7 +104,7 @@ bool		setup_payload(const struct entry *original_entry, \
 	void	*virus_location      = safe(virus_off, virus_size);
 
 #ifdef DEBUG
-	char	e[] = {'w','i','l','d','l','y',' ','u','n','r','e','a','s','o','n','a','b','l','e','\0'};
+	char	e[] = {'8','1','\0'};
 #endif
 	if (!payload_location || !constants_location || !virus_location)
 		return errors(ERR_CORRUPT, e);

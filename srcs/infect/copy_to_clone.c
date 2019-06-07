@@ -39,8 +39,8 @@ static bool	copy_after_payload(const struct famine food, size_t end_last_sect, \
 	void		*clone    = safe_accessor(end_last_sect + shift_amount, size_after_last_sect, food.clone_safe);
 
 	#ifdef DEBUG
-	char	e1[] = {'t', 'r', 'u', 'n', 'c', 'a', 't', 'e', 'd', ' ', 'f', 'i', 'l', 'e', '\0'};
-	char	e2[] = {'w', 'i', 'l', 'd', 'l', 'y', ' ', 'u', 'n', 'r', 'e', 'a', 's', 'o', 'n', 'a', 'b', 'l', 'e', '\0'};
+	char	e1[] = {'3','1','\0'};
+	char	e2[] = {'3','2','\0'};
 
 	if (!original) return errors(ERR_CORRUPT, e1);
 	if (!clone) return errors(ERR_CORRUPT, e2);
@@ -57,7 +57,7 @@ bool		copy_to_clone(const struct famine food, size_t end_last_sect, \
 	|| !copy_after_payload(food, end_last_sect, shift_amount, original_size))
 	{
 		#ifdef DEBUG
-		char	e1[] = {'c', 'o', 'p', 'y', '_', 't', 'o', '_', 'c', 'l', 'o', 'n', 'e', '\0'};
+		char	e1[] = {'3','3','\0'};
 
 		return errors(ERR_THROW, e1);
 		#endif
