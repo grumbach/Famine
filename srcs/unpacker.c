@@ -1,21 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   unpacker.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/04 03:39:28 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 07:23:16 by agrumbac         ###   ########.fr       */
+/*   Created: 2019/06/07 06:41:28 by agrumbac          #+#    #+#             */
+/*   Updated: 2019/06/07 06:44:39 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "famine.h"
-#include "syscall.h"
-
-int	_start(void)
+void		unpacker(void)
 {
-	virus();
-	famine_exit(0);
-	__builtin_unreachable();
+	// unpack()
 }

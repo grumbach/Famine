@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 04:27:47 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 02:24:34 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 07:27:41 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,7 @@ bool		copy_to_clone(const struct famine food, size_t end_last_sect, \
 ** payload
 */
 
-void	begin_payload(void);
-void	end_payload(void);
+void		_start(void);
 
 /*
 ** endian

