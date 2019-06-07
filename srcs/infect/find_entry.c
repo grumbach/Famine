@@ -26,7 +26,7 @@ static bool	find_entry_shdr(struct safe_pointer info, const struct endians_point
 	struct entry		*stored_entry   = closure->stored_entry;
 	Elf64_Shdr		*elf64_sect_hdr = safe(offset, sizeof(Elf64_Shdr));
 
-	if (!elf64_sect_hdr) return (false);
+	if (!elf64_sect_hdr) return errors(ERR_CORRUPT, "bad shdr offset");
 
 	const Elf64_Addr	sh_addr = endians.endian_8(elf64_sect_hdr->sh_addr);
 	const Elf64_Xword	sh_size = endians.endian_8(elf64_sect_hdr->sh_size);
@@ -58,7 +58,7 @@ static bool	find_entry_phdr(struct safe_pointer info, const struct endians_point
 	struct entry		*stored_entry  = closure->stored_entry;
 	Elf64_Phdr		*elf64_seg_hdr = safe(offset, sizeof(Elf64_Phdr));
 
-	if (!elf64_seg_hdr) return (false);
+	if (!elf64_seg_hdr) return errors(ERR_CORRUPT, "bad phdr offset");
 
 	const Elf64_Addr	p_vaddr = endians.endian_8(elf64_seg_hdr->p_vaddr);
 	const Elf64_Xword	p_memsz = endians.endian_8(elf64_seg_hdr->p_memsz);
@@ -75,28 +75,28 @@ bool		find_entry(struct entry *original_entry, struct safe_pointer info,
 	Elf64_Ehdr	*safe_elf64_hdr;
 
 	safe_elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
-	if (!safe_elf64_hdr) return (false);
+	if (!safe_elf64_hdr) return errors(ERR_CORRUPT, "missing elf64_hdr");
 	closure.e_entry = endians.endian_8(safe_elf64_hdr->e_entry);
 
 	ft_bzero(original_entry, sizeof(*original_entry));
 	closure.stored_entry = original_entry;
 
 	if (!foreach_phdr(info, endians, find_entry_phdr, &closure))
-		return (false);
+		return errors(ERR_THROW, "find_entry");
 	if (!original_entry->safe_phdr)
-		return (false);
+		return errors(ERR_CORRUPT, "missing entry segment");
 
 	if (!foreach_shdr(info, endians, find_entry_shdr, &closure))
-		return (false);
+		return errors(ERR_THROW, "find_entry");
 	if (!original_entry->safe_shdr)
-		return (false);
+		return errors(ERR_CORRUPT, "missing entry section");
 
 	const Elf64_Addr sh_addr  = endians.endian_8(original_entry->safe_shdr->sh_addr);
 
 	original_entry->offset_in_section = closure.e_entry - sh_addr;
 
 	if (original_entry->end_of_last_section == 0)
-		return (false);
+		return errors(ERR_CORRUPT, "no section in entry segment");
 
 	return (true);
 }
