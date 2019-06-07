@@ -1,4 +1,5 @@
 #include <sys/types.h>
+#include <string.h>
 #include "syscall.h"
 
 ssize_t	ft_getrandom(void *buf, size_t buflen)
@@ -69,7 +70,7 @@ void	*ft_memcpy(void *dst, void *src, size_t n)
 char	*ft_strcpy(char *dst, const char *src)
 {
 	int i = 0;
-	
+
 	while(src[i])
 	{
 		dst[i] = src[i];
