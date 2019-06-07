@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 14:56:28 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 02:19:22 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 09:51:26 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ bool		adjust_references(const struct safe_pointer info, \
 	closure.end_last_sect = original_entry->end_of_last_section;
 
 	Elf64_Ehdr	*elf_hdr = safe(0, sizeof(Elf64_Ehdr));
-	if (elf_hdr == NULL) return errors(ERR_CORRUPT, "wildly unreasonable");
+	if (elf_hdr == NULL) return errors(ERR_CORRUPT, "wildly unreasonable\nadjust_references");
 
 	adjust_phdr_table_offset(endians, elf_hdr, shift_amount, closure.end_last_sect);
 	adjust_shdr_table_offset(endians, elf_hdr, shift_amount, closure.end_last_sect);

@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 04:27:47 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 07:27:41 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 09:27:54 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,6 @@ struct				entry
 };
 
 typedef	bool	(*f_iter_callback)(struct safe_pointer info, const struct endians_pointer endians, size_t offset, void *data);
-
-/*
-** encryption
-*/
-
-void	encrypt(uint num_rounds, char *data, uint32_t const key[4], size_t size);
-void	decrypt(uint num_rounds, char *data, uint32_t const key[4], size_t size);
 
 /*
 ** iterators

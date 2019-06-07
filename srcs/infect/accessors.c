@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 06:32:25 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 04:47:52 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 09:55:54 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** returns NULL if requested memory is out of range
 */
 
-#define MAX_EXT_SIZE	4096
+#define MAX_EXT_SIZE	131072
 
 __warn_unused_result
 void			*safe_accessor(const size_t offset, const size_t size, \

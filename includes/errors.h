@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 01:53:00 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 04:53:38 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 10:09:34 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ enum
 	ERR_SIZE,               // number of ERRs above, always last
 };
 
-# define DEBUG		1
+// # define DEBUG		1
 
 # ifdef DEBUG
 #  define errors(err, fmt, ...)	({					       \
@@ -41,7 +41,7 @@ enum
 	};								       \
 	const char *sys_err = (err == ERR_SYS ? "sys error" : "");	       \
 	const char *colon = (err == ERR_SYS ? ": " : "");		       \
-	dprintf(2, fmt, msg[err], ##__VA_ARGS__, colon, sys_err);\
+	dprintf(2, fmt "\n", msg[err], ##__VA_ARGS__, colon, sys_err);\
 	(false);							       \
 })
 # else

