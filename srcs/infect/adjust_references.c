@@ -24,7 +24,7 @@ static bool	shift_phdr_position(struct safe_pointer info, \
 {
 	struct data	*closure = data;
 	Elf64_Phdr	*phdr    = safe(offset, sizeof(Elf64_Phdr));
-	if (phdr == NULL) return false;
+	if (phdr == NULL) return errors(ERR_CORRUPT, "bad phdr offset");
 
 	Elf64_Off	p_offset = endians.endian_8(phdr->p_offset);
 
@@ -42,7 +42,7 @@ static bool	shift_shdr_position(struct safe_pointer info, \
 {
 	struct data 	*closure = data;
 	Elf64_Shdr	*shdr    = safe(offset, sizeof(Elf64_Shdr));
-	if (shdr == NULL) return false;
+	if (shdr == NULL) return errors(ERR_CORRUPT, "bad shdr offset");
 
 	Elf64_Off	sh_offset = endians.endian_8(shdr->sh_offset);
 
@@ -93,14 +93,15 @@ bool		adjust_references(const struct safe_pointer info, \
 	closure.end_last_sect = original_entry->end_of_last_section;
 
 	Elf64_Ehdr	*elf_hdr = safe(0, sizeof(Elf64_Ehdr));
-	if (elf_hdr == NULL) return false;
+	if (elf_hdr == NULL) return errors(ERR_CORRUPT, "wildly unreasonable");
 
 	adjust_phdr_table_offset(endians, elf_hdr, shift_amount, closure.end_last_sect);
 	adjust_shdr_table_offset(endians, elf_hdr, shift_amount, closure.end_last_sect);
 
-	if (!foreach_phdr(info, endians, shift_phdr_position, &closure)
-	|| !foreach_shdr(info, endians, shift_shdr_position, &closure))
-		return false;
+	if (!foreach_phdr(info, endians, shift_phdr_position, &closure))
+		return errors(ERR_THROW, "adjust_references");
+	if (!foreach_shdr(info, endians, shift_shdr_position, &closure))
+		return errors(ERR_THROW, "adjust_references");
 
 	return true;
 }
