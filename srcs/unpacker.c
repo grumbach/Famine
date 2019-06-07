@@ -1,29 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_iterator.c                                    :+:      :+:    :+:   */
+/*   unpacker.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/04 03:37:14 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/04 04:11:06 by agrumbac         ###   ########.fr       */
+/*   Created: 2019/06/07 06:41:28 by agrumbac          #+#    #+#             */
+/*   Updated: 2019/06/07 06:44:39 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void		infect_files_in(const char *path)
+void		unpacker(void)
 {
-	path[MAXPATHLEN];
-
-	DIR		*dirp = opendir(path);
-	struct dirent	*file;
-
-	while ((file = readdir(dirp)))
-	{
-		filepath = path ## file->d_name;
-		if (file->d_type == DT_DIR)
-			infect_files_in(file_path);
-		else if (elf64identifier(file_path))
-			infect(file_path);
-	}
-	closedir(dirp);
+	// unpack()
 }

