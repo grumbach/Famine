@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 08:11:33 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 11:55:35 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 12:44:23 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,7 @@ bool	foreach_phdr(const struct safe_pointer info, const struct endians_pointer e
 {
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 
-#ifdef DEBUG
-	char e0[] = {'6','1','\0'};
-	char e1[] = {'6','2','\0'};
-	char e2[] = {'6','3','\0'};
-#endif
-	if (elf64_hdr == NULL) return errors(ERR_CORRUPT, e0);
+	if (elf64_hdr == NULL) return errors(ERR_CORRUPT, '9','1');
 
 	const Elf64_Off		phoff     = endians.endian_8(elf64_hdr->e_phoff);
 	const Elf64_Half	phentsize = endians.endian_2(elf64_hdr->e_phentsize);
@@ -34,7 +29,7 @@ bool	foreach_phdr(const struct safe_pointer info, const struct endians_pointer e
 	if (phentsize < sizeof(Elf64_Phdr)
 	|| (array_size / phentsize != phnum)
 	|| (!(segments = safe(phoff, array_size))))
-		return errors(ERR_CORRUPT, e1);
+		return errors(ERR_CORRUPT, '9','2');
 
 	while (phnum--)
 	{
@@ -42,7 +37,7 @@ bool	foreach_phdr(const struct safe_pointer info, const struct endians_pointer e
 		size_t	offset        = (elf64_seg_hdr - (size_t)elf64_hdr);
 
 		if (!callback(info, endians, offset, data))
-			return errors(ERR_THROW, e2);
+			return errors(ERR_THROW, '9','3');
 	}
 	return (true);
 }
@@ -52,12 +47,7 @@ bool	foreach_shdr(const struct safe_pointer info, const struct endians_pointer e
 {
 	const Elf64_Ehdr	*elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
 
-#ifdef DEBUG
-	char e0[] = {'6','4','\0'};
-	char e1[] = {'6','5','\0'};
-	char e2[] = {'6','6','\0'};
-#endif
-	if (elf64_hdr == NULL) return errors(ERR_CORRUPT, e0);
+	if (elf64_hdr == NULL) return errors(ERR_CORRUPT, '9','4');
 
 	const Elf64_Off		shoff     = endians.endian_8(elf64_hdr->e_shoff);
 	const Elf64_Half	shentsize = endians.endian_2(elf64_hdr->e_shentsize);
@@ -68,7 +58,7 @@ bool	foreach_shdr(const struct safe_pointer info, const struct endians_pointer e
 	if (shentsize < sizeof(Elf64_Shdr)
 	|| (array_size / shentsize != shnum)
 	|| (!(sections = safe(shoff, array_size))))
-		return errors(ERR_CORRUPT, e1);
+		return errors(ERR_CORRUPT, '9','5');
 
 	while (shnum--)
 	{
@@ -76,7 +66,7 @@ bool	foreach_shdr(const struct safe_pointer info, const struct endians_pointer e
 		size_t	offset = (elf64_section_hdr - (size_t)elf64_hdr);
 
 		if (!callback(info, endians, offset, data))
-			return errors(ERR_THROW, e2);
+			return errors(ERR_THROW, '9','6');
 	}
 	return (true);
 }

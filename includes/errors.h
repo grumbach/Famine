@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 01:53:00 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 12:09:22 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 12:37:18 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ enum
 # define DEBUG		1
 
 # ifdef DEBUG
-#  define errors(err, fmt, ...)	({        \
-	dprintf(2, fmt);                  \
-	dprintf(2, (char[]){'\n', '\0'}); \
-	(false);                          \
+#  define errors(err, f, e)	({                      \
+	dprintf(2, (char[]){f, e, '\n', '\0'}); \
+	(false);                                \
 })
 # else
 #  define errors(...)		false

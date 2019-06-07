@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 00:10:33 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 11:57:21 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 12:46:45 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,8 @@ bool		setup_payload(const struct entry *original_entry, \
 	void	*constants_location  = safe(payload_off + CALL_INSTR_SIZE, sizeof(constants));
 	void	*virus_location      = safe(virus_off, virus_size);
 
-#ifdef DEBUG
-	char	e[] = {'8','1','\0'};
-#endif
 	if (!payload_location || !constants_location || !virus_location)
-		return errors(ERR_CORRUPT, e);
+		return errors(ERR_CORRUPT, 'b','1');
 
 	ft_memcpy(payload_location, (void *)famine_entry, payload_size);
 	ft_memcpy(constants_location, &constants, sizeof(constants));
