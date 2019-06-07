@@ -1,4 +1,3 @@
-
 #include <sys/types.h>
 #include "syscall.h"
 
@@ -67,37 +66,27 @@ void	*ft_memcpy(void *dst, void *src, size_t n)
 	return dst;
 }
 
-char	*ft_strcat(char *s1, char *s2)
-{
-	unsigned long	len1;
-	unsigned long	len2;
-	unsigned long	m;
-
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	m = len2 << 3;
-	while (m--)
-		((unsigned long*)s1)[len1 + m] = ((unsigned long*)s2)[m];
-	len2 &= 7;
-	while (len2--)
-		s1[len1 + len2] = s2[len2];
-	s1[len1 + len2] = 0;
-	return (s1);
-}
-
 char	*ft_strcpy(char *dst, const char *src)
 {
-	char	*p = dst;
-
-	while (*src)
+	int i = 0;
+	
+	while(src[i])
 	{
-		*dst = *src;
-		src++;
-		dst++;
+		dst[i] = src[i];
+		i++;
 	}
-	*dst = *src;
-	return (p);
+	dst[i] = '\0';
+	return dst;
 }
+
+char	*ft_strcat(char *dest, char *source)
+{
+	int len = ft_strlen(dest);
+
+	ft_strcpy(dest + len, source);
+	return dest;
+}
+
 
 int	dprintf(int fd, char *fmt, ...)
 {
