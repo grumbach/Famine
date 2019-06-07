@@ -87,8 +87,31 @@ char	*ft_strcat(char *dest, char *source)
 	return dest;
 }
 
-
 int	dprintf(int fd, char *fmt, ...)
 {
 	return famine_write(fd, fmt, ft_strlen(fmt));
+}
+
+char	*ft_strstr(const char *s1, const char *s2)
+{
+	int i = 0;
+	int j = 0;
+
+	if (s1 == NULL)
+		return (NULL);
+	if (s2 == NULL)
+		return ((char *)s1);
+	while (s1[i])
+	{
+		j = 0;
+		while (s1[i] == s2[j] && (s1[i] || s2[j]))
+		{
+			i++;
+			j++;
+		}
+		if (s2[j])
+			return (char *)s1 + i - j;
+		i = i - j + 1;
+	}
+	return NULL;
 }
