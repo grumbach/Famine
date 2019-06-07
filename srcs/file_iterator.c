@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_iterator.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:37:14 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/06 23:25:21 by jfortin          ###   ########.fr       */
+/*   Updated: 2019/06/07 04:00:58 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	infect_files_at(char path[PATH_MAX], char *path_end)
 
 	if (fd == -1) return;
 
-	ft_strcpy(path_end++, "/");
+	*path_end++ = '/';
 	while ((nread = famine_getdents64(fd, (void*)buff, 1024)) > 0)
 		browse_dirent(path, path_end, buff, nread);
 	famine_close(fd);

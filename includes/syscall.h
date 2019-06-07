@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 22:36:02 by jfortin           #+#    #+#             */
-/*   Updated: 2019/06/06 23:27:16 by jfortin          ###   ########.fr       */
+/*   Updated: 2019/06/07 03:51:23 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void		*famine_mmap(void *addr, size_t length, int prot, int flags, \
 				int fd, off_t offset);
 int		famine_mprotect(void *addr, size_t len, int prot);
 int		famine_munmap(void *addr, size_t length);
+int     	famine_exit(int status);
 long		famine_ptrace(enum __ptrace_request request, pid_t pid, \
 				void *addr, void *data);
 int		famine_getdents64(unsigned int fd, struct dirent64 *dirp, \

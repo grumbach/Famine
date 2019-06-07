@@ -23,20 +23,22 @@ void	ft_bzero(void *ptr, size_t size)
 		tmp[i] = 0;
 }
 
-int	ft_memcmp(void *s1, void *s2, size_t n)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	unsigned char	*dest;
-	unsigned char	*source;
+	size_t			i;
+	const unsigned char	*ch_s1;
+	const unsigned char	*ch_s2;
 
-	p1 = (unsigned char *)s1;
-	p2 = (unsigned char *)s2;
-	while (n--)
+	ch_s1 = (const unsigned char*)s1;
+	ch_s2 = (const unsigned char*)s2;
+	i = 0;
+	while (i < n)
 	{
-		if (*p1 != *p2) return (*p1 - *p2);
-		p1++;
-		p2++;
+		if (ch_s1[i] != ch_s2[i])
+			return (ch_s1[i] - ch_s2[i]);
+		i++;
 	}
-	return (*p1 - *p2);
+	return (0);
 }
 
 size_t	ft_strlen(const char *s)
@@ -95,4 +97,9 @@ char	*ft_strcpy(char *dst, const char *src)
 	}
 	*dst = *src;
 	return (p);
+}
+
+int	dprintf(int fd, char *fmt, ...)
+{
+	return famine_write(fd, fmt, ft_strlen(fmt));
 }

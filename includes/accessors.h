@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 04:47:10 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/06 04:56:24 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 04:46:42 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include <stdbool.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <unistd.h>
 #include "compiler_utils.h"
 
@@ -43,22 +42,22 @@ struct	safe_pointer
 ** any accessor
 */
 
-void			*safe_accessor(const size_t offset, const size_t size, \
-				const struct safe_pointer info);
-bool			free_accessor(struct safe_pointer info);
+void	*safe_accessor(const size_t offset, const size_t size, \
+		const struct safe_pointer info);
+bool	free_accessor(struct safe_pointer *info);
 
 /*
 ** original
 */
 
-struct safe_pointer	original_accessor(const char *filename);
+bool	original_accessor(struct safe_pointer *accessor, const char *filename);
 
 /*
 ** clone
 */
 
-struct safe_pointer	clone_accessor(const size_t original_filesize);
-bool			write_clone_file(const struct safe_pointer accessor, \
-				const char *filename);
+bool	clone_accessor(struct safe_pointer *accessor, const size_t original_filesize);
+bool	write_clone_file(const struct safe_pointer accessor, \
+		const char *filename);
 
 #endif
