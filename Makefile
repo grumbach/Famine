@@ -6,7 +6,7 @@
 #    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/10 17:19:11 by agrumbac          #+#    #+#              #
-#    Updated: 2019/06/04 00:21:37 by agrumbac         ###   ########.fr        #
+#    Updated: 2019/06/07 10:00:02 by agrumbac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,24 @@
 
 NAME = famine
 
-SRC = famine.c
+SRC =	famine.s                      \
+	utils.c                       \
+	detect_spy.c                  \
+	syscall.c                     \
+	decrypt.s                     \
+	infect/virus.c                \
+	infect/accessors.c            \
+	infect/adjust_references.c    \
+	infect/copy_to_clone.c        \
+	infect/encrypt.s              \
+	infect/endian.c               \
+	infect/file_iterator.c        \
+	infect/find_entry.c           \
+	infect/infect.c               \
+	infect/iterators.c            \
+	infect/packer.c               \
+	infect/setup_payload.c        \
+	main.c
 
 CC = clang
 
@@ -29,11 +46,16 @@ OBJ = $(OBJC:.s=.o)
 
 DEP = $(addprefix ${OBJDIR}/, $(SRC:.c=.d))
 
-CFLAGS = -Wall -Wextra -MMD -fpie -g
+CFLAGS = -Wall -Wextra -MMD -g \
+	-fno-stack-protector \
+	-nodefaultlibs \
+	-fno-builtin -nostdlib -fpic
+	# -fsanitize=address,undefined
 
 ASFLAGS = -f elf64 -g
 
-LDFLAGS = -Iincludes/ -pie
+LDFLAGS = -Iincludes/ -nostdlib -fpic
+	# -fsanitize=address,undefined
 
 ############################## COLORS ##########################################
 
@@ -68,13 +90,13 @@ ${NAME}: ${OBJ}
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.s
 	@echo ${Y}Compiling [$@]...${X}
-	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/elf64
+	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/infect
 	@${AS} ${ASFLAGS} -o $@ $<
 	@printf ${UP}${CUT}
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.c
 	@echo ${Y}Compiling [$@]...${X}
-	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/elf64
+	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/infect
 	@${CC} ${CFLAGS} ${LDFLAGS} -c -o $@ $<
 	@printf ${UP}${CUT}
 

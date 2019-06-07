@@ -1,29 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_iterator.c                                    :+:      :+:    :+:   */
+/*   compiler_utils.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/04 03:37:14 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/04 04:11:06 by agrumbac         ###   ########.fr       */
+/*   Created: 2019/03/11 17:20:06 by agrumbac          #+#    #+#             */
+/*   Updated: 2019/04/19 17:16:54 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void		infect_files_in(const char *path)
-{
-	path[MAXPATHLEN];
+#ifndef COMPILER_UTILS_H
+# define COMPILER_UTILS_H
 
-	DIR		*dirp = opendir(path);
-	struct dirent	*file;
+# define __unused			__attribute__((unused))
+# define __noreturn			__attribute__((noreturn))
+# define __warn_unused_result		__attribute__((warn_unused_result))
+# define __nonull			__attribute__((nonnull))
 
-	while ((file = readdir(dirp)))
-	{
-		filepath = path ## file->d_name;
-		if (file->d_type == DT_DIR)
-			infect_files_in(file_path);
-		else if (elf64identifier(file_path))
-			infect(file_path);
-	}
-	closedir(dirp);
-}
+#endif
