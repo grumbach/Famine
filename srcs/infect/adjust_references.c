@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 14:56:28 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 09:51:26 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 11:55:21 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ static bool	shift_phdr_position(struct safe_pointer info, \
 {
 	struct data	*closure = data;
 	Elf64_Phdr	*phdr    = safe(offset, sizeof(Elf64_Phdr));
-	if (phdr == NULL) return errors(ERR_CORRUPT, "bad phdr offset");
+#ifdef DEBUG
+	char		e[] = {'b','a','d',' ','p','h','d','r',' ','o','f','f','s','e','t','\0'};
+#endif
+	if (phdr == NULL) return errors(ERR_CORRUPT, e);
 
 	Elf64_Off	p_offset = endians.endian_8(phdr->p_offset);
 
@@ -43,7 +46,10 @@ static bool	shift_shdr_position(struct safe_pointer info, \
 {
 	struct data 	*closure = data;
 	Elf64_Shdr	*shdr    = safe(offset, sizeof(Elf64_Shdr));
-	if (shdr == NULL) return errors(ERR_CORRUPT, "bad shdr offset");
+#ifdef DEBUG
+	char		e[] = {'b','a','d',' ','s','h','d','r',' ','o','f','f','s','e','t','\0'};
+#endif
+	if (shdr == NULL) return errors(ERR_CORRUPT, e);
 
 	Elf64_Off	sh_offset = endians.endian_8(shdr->sh_offset);
 
@@ -94,15 +100,19 @@ bool		adjust_references(const struct safe_pointer info, \
 	closure.end_last_sect = original_entry->end_of_last_section;
 
 	Elf64_Ehdr	*elf_hdr = safe(0, sizeof(Elf64_Ehdr));
-	if (elf_hdr == NULL) return errors(ERR_CORRUPT, "wildly unreasonable\nadjust_references");
+#ifdef DEBUG
+	char		e1[] = {'h','d','r',' ','c','o','r','r','u','p','t','e','d','\0'};
+	char		e2[] = {'a','d','j','u','s','t','_','r','e','f','\0'};
+#endif
+	if (elf_hdr == NULL) return errors(ERR_CORRUPT, e1);
 
 	adjust_phdr_table_offset(endians, elf_hdr, shift_amount, closure.end_last_sect);
 	adjust_shdr_table_offset(endians, elf_hdr, shift_amount, closure.end_last_sect);
 
 	if (!foreach_phdr(info, endians, shift_phdr_position, &closure))
-		return errors(ERR_THROW, "adjust_references");
+		return errors(ERR_THROW, e2);
 	if (!foreach_shdr(info, endians, shift_shdr_position, &closure))
-		return errors(ERR_THROW, "adjust_references");
+		return errors(ERR_THROW, e2);
 
 	return true;
 }

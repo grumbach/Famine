@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 23:43:29 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 02:20:35 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 11:55:51 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@ static bool	find_entry_shdr(struct safe_pointer info, const struct endians_point
 	struct data		*closure        = data;
 	struct entry		*stored_entry   = closure->stored_entry;
 	Elf64_Shdr		*elf64_sect_hdr = safe(offset, sizeof(Elf64_Shdr));
+#ifdef DEBUG
+	char			e[] = {'b','a','d',' ','s','h','d','r',' ','o','f','f','s','e','t','\0'};
+#endif
 
-	if (!elf64_sect_hdr) return errors(ERR_CORRUPT, "bad shdr offset");
+	if (!elf64_sect_hdr) return errors(ERR_CORRUPT, e);
 
 	const Elf64_Addr	sh_addr = endians.endian_8(elf64_sect_hdr->sh_addr);
 	const Elf64_Xword	sh_size = endians.endian_8(elf64_sect_hdr->sh_size);
@@ -58,8 +61,9 @@ static bool	find_entry_phdr(struct safe_pointer info, const struct endians_point
 	struct data		*closure       = data;
 	struct entry		*stored_entry  = closure->stored_entry;
 	Elf64_Phdr		*elf64_seg_hdr = safe(offset, sizeof(Elf64_Phdr));
+	char			e[] = {'b','a','d',' ','p','h','d','r',' ','o','f','f','s','e','t','\0'};
 
-	if (!elf64_seg_hdr) return errors(ERR_CORRUPT, "bad phdr offset");
+	if (!elf64_seg_hdr) return errors(ERR_CORRUPT, e);
 
 	const Elf64_Addr	p_vaddr = endians.endian_8(elf64_seg_hdr->p_vaddr);
 	const Elf64_Xword	p_memsz = endians.endian_8(elf64_seg_hdr->p_memsz);
@@ -74,30 +78,37 @@ bool		find_entry(struct entry *original_entry, struct safe_pointer info,
 {
 	struct data	closure;
 	Elf64_Ehdr	*safe_elf64_hdr;
+#ifdef DEBUG
+	char		e1[] = {'h','d','r',' ','c','o','r','r','u','p','t','e','d','\0'};
+	char		e2[] = {'f','i','n','d','_','e','n','t','r','y',\0'};
+	char		e3[] = {'m','i','s','s',' ','e','n','t','r','y',' ','s','e','g','\0'};
+	char		e4[] = {'m','i','s','s',' ','e','n','t','r','y',' ','s','e','c','\0'};
+	char		e5[] = {'e','n','t','r','y',' ','n','o',' ','i','n',' ','s','e','g',\0'};
+#endif
 
 	safe_elf64_hdr = safe(0, sizeof(Elf64_Ehdr));
-	if (!safe_elf64_hdr) return errors(ERR_CORRUPT, "missing elf64_hdr");
+	if (!safe_elf64_hdr) return errors(ERR_CORRUPT, e1);
 	closure.e_entry = endians.endian_8(safe_elf64_hdr->e_entry);
 
 	ft_bzero(original_entry, sizeof(*original_entry));
 	closure.stored_entry = original_entry;
 
 	if (!foreach_phdr(info, endians, find_entry_phdr, &closure))
-		return errors(ERR_THROW, "find_entry");
+		return errors(ERR_THROW, e2);
 	if (!original_entry->safe_phdr)
-		return errors(ERR_CORRUPT, "missing entry segment");
+		return errors(ERR_CORRUPT, e3);
 
 	if (!foreach_shdr(info, endians, find_entry_shdr, &closure))
-		return errors(ERR_THROW, "find_entry");
+		return errors(ERR_THROW, e2);
 	if (!original_entry->safe_shdr)
-		return errors(ERR_CORRUPT, "missing entry section");
+		return errors(ERR_CORRUPT, e4);
 
 	const Elf64_Addr sh_addr  = endians.endian_8(original_entry->safe_shdr->sh_addr);
 
 	original_entry->offset_in_section = closure.e_entry - sh_addr;
 
 	if (original_entry->end_of_last_section == 0)
-		return errors(ERR_CORRUPT, "no section in entry segment");
+		return errors(ERR_CORRUPT, e5);
 
 	return (true);
 }
