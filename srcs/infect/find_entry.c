@@ -6,12 +6,13 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 23:43:29 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/06 04:48:04 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 02:20:35 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infect.h"
 #include "utils.h"
+#include "errors.h"
 
 struct	data
 {

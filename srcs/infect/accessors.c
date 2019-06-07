@@ -6,12 +6,13 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 06:32:25 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 02:03:20 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 02:22:35 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "accessors.h"
 #include "syscall.h"
+#include "errors.h"
 
 /*
 ** safe_accessor()
@@ -48,15 +49,15 @@ struct safe_pointer	original_accessor(const char *filename)
 	int		fd = famine_open(filename, O_RDONLY);
 
 	if (fd < 0)
-		{ptr = NULL; errors(ERR_SYS, "open failed")}
+		{ptr = NULL; errors(ERR_SYS, "open failed");}
 	if (famine_fstat(fd, &buf) < 0)
-		{ptr = NULL; errors(ERR_SYS, "fstat failed")}
+		{ptr = NULL; errors(ERR_SYS, "fstat failed");}
 	if (buf.st_mode & S_IFDIR)
-		{ptr = NULL; errors(ERR_USAGE, "can't parse directories")}
+		{ptr = NULL; errors(ERR_USAGE, "can't parse directories");}
 	if ((ptr = famine_mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
-		{ptr = NULL; errors(ERR_SYS, "mmap failed")}
+		{ptr = NULL; errors(ERR_SYS, "mmap failed");}
 	if (famine_close(fd))
-		{ptr = NULL; errors(ERR_SYS, "close failed")}
+		{ptr = NULL; errors(ERR_SYS, "close failed");}
 
 	struct safe_pointer	accessor =
 	{
@@ -88,12 +89,12 @@ bool			write_clone_file(const struct safe_pointer accessor, \
 	int	fd = famine_open(filename, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
 
 	if (fd == -1)
-		return errors(ERR_SYS, "failed creating file " OUTPUT_FILENAME);
+		return errors(ERR_SYS, "failed creating file");
 
 	if (famine_write(fd, accessor.ptr, accessor.filesize) == -1)
 	{
 		famine_close(fd);
-		return errors(ERR_SYS, "failed writing to " OUTPUT_FILENAME);;
+		return errors(ERR_SYS, "failed writing to file");
 	}
 
 	famine_close(fd);

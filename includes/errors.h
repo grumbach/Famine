@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 01:53:00 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 01:53:17 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 02:20:31 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,15 @@
 
 # define ERR_FATAL	"\033[31m[FATAL ERROR] \033[0m"
 # define ERR_WARN	"\033[33m[WARNING] \033[0m"
+
+enum
+{
+	ERR_SYS,                // syscall failure
+	ERR_THROW,              // throw error form above function
+	ERR_USAGE,              // bad usage
+	ERR_CORRUPT,            // corrupt file
+	ERR_SIZE,               // number of ERRs above, always last
+};
 
 # define errors(err, fmt, ...)	({					       \
 	static const char	*msg[ERR_SIZE] =			       \

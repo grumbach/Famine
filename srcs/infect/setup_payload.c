@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_payload.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 00:10:33 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/06 20:47:17 by jfortin          ###   ########.fr       */
+/*   Updated: 2019/06/07 02:21:37 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <linux/elf.h>
 #include "utils.h"
 #include "infect.h"
+#include "errors.h"
 
 /*
 **  Elf64_packer memory overview
@@ -110,7 +111,7 @@ bool		setup_payload(const struct entry *original_entry, \
 	void	*text_location       = safe(text_off, text_size);
 
 	if (!payload_location || !constants_location || !text_location)
-       return (errors(ERR_CORRUPT, "wildly unreasonable"));
+       return errors(ERR_CORRUPT, "wildly unreasonable");
 
 	encrypt(32, text_location, constants.key, text_size);
 	ft_memcpy(payload_location, begin_payload, payload_size);

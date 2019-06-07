@@ -6,7 +6,7 @@
 #    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/10 17:19:11 by agrumbac          #+#    #+#              #
-#    Updated: 2019/06/06 04:54:20 by agrumbac         ###   ########.fr        #
+#    Updated: 2019/06/07 02:28:36 by agrumbac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,11 +45,11 @@ OBJ = $(OBJC:.s=.o)
 
 DEP = $(addprefix ${OBJDIR}/, $(SRC:.c=.d))
 
-CFLAGS = -Wall -Wextra -MMD -g
+CFLAGS = -Wall -Wextra -MMD -g -fsanitize=address,undefined
 
 ASFLAGS = -f elf64 -g
 
-LDFLAGS = -Iincludes/
+LDFLAGS = -Iincludes/ -fsanitize=address,undefined
 
 ############################## COLORS ##########################################
 

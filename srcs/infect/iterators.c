@@ -6,11 +6,12 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 08:11:33 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 01:55:59 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 02:20:44 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infect.h"
+#include "errors.h"
 
 bool	foreach_phdr(const struct safe_pointer info, const struct endians_pointer endians,
 	 f_iter_callback callback, void *data)
