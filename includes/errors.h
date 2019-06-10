@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 01:53:00 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 10:09:34 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/07 12:37:18 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 # include <string.h>
 # include "utils.h"
-
-# define ERR_FATAL	"\033[31m[FATAL ERROR] \033[0m"
-# define ERR_WARN	"\033[33m[WARNING] \033[0m"
 
 enum
 {
@@ -28,21 +25,12 @@ enum
 	ERR_SIZE,               // number of ERRs above, always last
 };
 
-// # define DEBUG		1
+# define DEBUG		1
 
 # ifdef DEBUG
-#  define errors(err, fmt, ...)	({					       \
-	static const char	*msg[ERR_SIZE] =			       \
-	{								       \
-		[ERR_SYS]	= ERR_FATAL,				       \
-		[ERR_THROW]	= "  -> in _",				       \
-		[ERR_USAGE]	= ERR_WARN "Bad usage: ",		       \
-		[ERR_CORRUPT]	= ERR_WARN "Corrupt file: ",		       \
-	};								       \
-	const char *sys_err = (err == ERR_SYS ? "sys error" : "");	       \
-	const char *colon = (err == ERR_SYS ? ": " : "");		       \
-	dprintf(2, fmt "\n", msg[err], ##__VA_ARGS__, colon, sys_err);\
-	(false);							       \
+#  define errors(err, f, e)	({                      \
+	dprintf(2, (char[]){f, e, '\n', '\0'}); \
+	(false);                                \
 })
 # else
 #  define errors(...)		false
