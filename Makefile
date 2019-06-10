@@ -24,7 +24,6 @@ SRC =	famine.s                      \
 	infect/adjust_references.c    \
 	infect/copy_to_clone.c        \
 	infect/encrypt.s              \
-	infect/endian.c               \
 	infect/file_iterator.c        \
 	infect/find_entry.c           \
 	infect/infect.c               \
