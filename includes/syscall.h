@@ -6,7 +6,7 @@
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 22:36:02 by jfortin           #+#    #+#             */
-/*   Updated: 2019/06/11 21:47:56 by jfortin          ###   ########.fr       */
+/*   Updated: 2019/06/12 19:52:22 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@
 
 struct dirent64
 {
-    __ino64_t d_ino;
-    __off64_t d_off;
-    unsigned short int d_reclen;
-    unsigned char d_type;
-    char d_name[256];                /* We must not include limits.h! */
+	__ino64_t d_ino;
+	__off64_t d_off;
+	unsigned short int d_reclen;
+	unsigned char d_type;
+	char d_name[256];
 };
 
 /*
