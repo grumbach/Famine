@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         #
+#    By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/10 17:19:11 by agrumbac          #+#    #+#              #
-#    Updated: 2019/06/07 10:00:02 by agrumbac         ###   ########.fr        #
+#    Updated: 2019/06/12 18:38:51 by jfortin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ NAME = famine
 
 SRC =	famine.s                      \
 	utils.c                       \
-	detect_spy.c                  \
 	syscall.c                     \
+	detect_spy.c                  \
 	decrypt.s                     \
 	infect/virus.c                \
 	infect/accessors.c            \

