@@ -4,7 +4,7 @@
 
 ssize_t	ft_getrandom(void *buf, size_t buflen)
 {
-	char		path[13] = {'/','d','e','v','/','u','r','a','n','d','o','m','\0'};
+	char		*path = (char[]){'/','d','e','v','/','u','r','a','n','d','o','m','\0'};
 	int		fd;
 	ssize_t		nbr_bytes;
 
@@ -96,7 +96,6 @@ int	dprintf(int fd, char *fmt, ...)
 char	*ft_strstr(const char *s1, const char *s2)
 {
 	int i = 0;
-	int j = 0;
 
 	if (s1 == NULL)
 		return (NULL);
@@ -104,7 +103,7 @@ char	*ft_strstr(const char *s1, const char *s2)
 		return ((char *)s1);
 	while (s1[i])
 	{
-		j = 0;
+		int j = 0;
 		while (s1[i] == s2[j] && (s1[i] || s2[j]))
 		{
 			i++;
