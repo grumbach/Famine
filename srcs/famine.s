@@ -29,7 +29,7 @@ famine_entry:
 	call mark_below
 	db "128 bit key here", "rel ptld", "ptldsize", "relvirus"
 	db "relentry", "virusize"
-	db "fill me fill me",0 ; TMP
+	db "64 bit signature here. A green mouse running in grass ! ~~(__^·>"
 ;------------------------------; Get variables address
 ; | 0    | *(16)       | *24         | *(32)       | *(40)        | *48        |
 ; | rdx  | r8          | r9          | r10         | r11          | r14        |
