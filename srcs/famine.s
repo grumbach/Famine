@@ -6,7 +6,7 @@
 ;    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/02/11 14:08:33 by agrumbac          #+#    #+#              ;
-;    Updated: 2019/06/14 10:40:57 by spolowy          ###   ########.fr        ;
+;    Updated: 2019/06/14 11:24:19 by spolowy          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -30,6 +30,7 @@ famine_entry:
 	call mark_below
 	db "128 bit key here", "rel ptld", "ptldsize", "relvirus"
 	db "relentry", "virusize"
+	db "64 bit signature here. A green mouse running in grass ! ~~(__^·>"
 ;------------------------------; Get variables address
 ; | 0    | *(16)       | *24         | *(32)       | *(40)        | *48        |
 ; | rdx  | r8          | r9          | r10         | r11          | r14        |
