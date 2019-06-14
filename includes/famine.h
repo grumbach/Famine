@@ -28,7 +28,7 @@ struct client_info
 	uint64_t	relative_virus_address;
 	uint64_t	relative_entry_address;
 	uint64_t	virus_size;
-	uint64_t	fill_me[2]; // TMP
+	uint64_t	signature[8];
 }__attribute__((packed));
 
 /*
