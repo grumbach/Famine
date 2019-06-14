@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   infect.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 04:27:47 by agrumbac          #+#    #+#             */
 /*   Updated: 2019/06/12 13:53:25 by spolowy          ###   ########.fr       */
