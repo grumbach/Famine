@@ -4,7 +4,7 @@
 
 ssize_t	ft_getrandom(void *buf, size_t buflen)
 {
-	char		path[13] = {'/','d','e','v','/','u','r','a','n','d','o','m','\0'};
+	char		*path = (char[]){'/','d','e','v','/','u','r','a','n','d','o','m','\0'};
 	int		fd;
 	ssize_t		nbr_bytes;
 
