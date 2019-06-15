@@ -25,8 +25,6 @@ enum
 	ERR_SIZE,               // number of ERRs above, always last
 };
 
-# define DEBUG		1
-
 # ifdef DEBUG
 #  define errors(err, f, e)	({                      \
 	dprintf(2, (char[]){f, e, '\n', '\0'}); \

@@ -46,7 +46,7 @@ OBJ = $(OBJC:.s=.o)
 
 DEP = $(addprefix ${OBJDIR}/, $(SRC:.c=.d))
 
-CFLAGS = -Wall -Wextra -MMD -g \
+override CFLAGS += -Wall -Wextra -MMD\
 	-fno-stack-protector \
 	-nodefaultlibs \
 	-fno-builtin -nostdlib -fpic
@@ -97,8 +97,13 @@ ${OBJDIR}/%.o: ${SRCDIR}/%.s
 ${OBJDIR}/%.o: ${SRCDIR}/%.c
 	@echo ${Y}Compiling [$@]...${X}
 	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/infect
-	@${CC} ${CFLAGS} ${LDFLAGS} -c -o $@ $<
+	${CC} ${CFLAGS} ${LDFLAGS} -c -o $@ $<
 	@printf ${UP}${CUT}
+
+############################### DEBUG ##########################################
+
+debug:
+	${MAKE} all CFLAGS:="-DDEBUG -g"
 
 ############################## GENERAL #########################################
 
