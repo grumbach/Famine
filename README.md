@@ -1,8 +1,21 @@
-# Famine
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/efc1afaa78b64fa399a860550e86d8a8)](https://app.codacy.com/app/agrumbac/Famine?utm_source=github.com&utm_medium=referral&utm_content=grumbach/Famine&utm_campaign=Badge_Grade_Dashboard)
+# Famine [![Codacy Badge](https://api.codacy.com/project/badge/Grade/efc1afaa78b64fa399a860550e86d8a8)](https://app.codacy.com/app/agrumbac/Famine?utm_source=github.com&utm_medium=referral&utm_content=grumbach/Famine&utm_campaign=Badge_Grade_Dashboard)
 
 A packed Virus for Elf64 binaries
+
+## Installation
+
+This might trigger your anti-virus, which is normal. Use at your own risk!
+
+```bash
+# clone it
+git clone https://github.com/grumbach/Famine.git && cd Famine
+# build it and run it
+make && ./famine
+# remove installation files
+cd .. && rm -rf Famine
+```
+
+## Insides
 
 ```
   Infected program memory overview
@@ -37,6 +50,4 @@ A packed Virus for Elf64 binaries
                           |========|
                           |  ...   |
                           .        .
-
- Note that relative_virus_addresss is in the opposite direction !
 ```
