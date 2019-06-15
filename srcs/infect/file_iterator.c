@@ -21,11 +21,10 @@ static void	infect_files_at(char path[PATH_MAX], char *path_end);
 static void	browse_dirent(char path[PATH_MAX], char *path_end, \
 			const char buff[1024], int nread)
 {
-	struct dirent64	*file;
-
 	for (int bpos = 0; bpos < nread;)
 	{
-		file = (struct dirent64*)(buff + bpos);
+		struct dirent64 *file = (struct dirent64*)(buff + bpos);
+
 		ft_strcpy(path_end, file->d_name);
 		if (file->d_name[0] != '.') // we respect your privacy ;)
 		{
