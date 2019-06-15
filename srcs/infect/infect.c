@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:37:20 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/12 10:42:47 by spolowy          ###   ########.fr       */
+/*   Updated: 2019/06/15 17:29:04 by ichkamo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static bool	elf64_identifier(const Elf64_Ehdr *hdr)
 {
 	if (ft_memcmp(hdr->e_ident, (char[4]){ELFMAG0, ELFMAG1, ELFMAG2, ELFMAG3}, SELFMAG) != 0 // wrong Magic
 	|| hdr->e_ident[EI_CLASS] != ELFCLASS64           // not 64bit
-	|| hdr->e_ident[EI_DATA] != ELFDATA2LSB              // not little endian
+	|| hdr->e_ident[EI_DATA] != ELFDATA2LSB           // not little endian
 	|| hdr->e_entry == 0                              // no entry point
 	|| hdr->e_phoff == 0                              // no program hdr table
 	|| hdr->e_shoff == 0)                             // no section hdr table

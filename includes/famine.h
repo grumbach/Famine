@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:38:38 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/12 13:50:04 by spolowy          ###   ########.fr       */
+/*   Updated: 2019/06/15 16:35:12 by ichkamo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ struct client_info
 	uint64_t	relative_virus_address;
 	uint64_t	relative_entry_address;
 	uint64_t	virus_size;
-	uint64_t	signature[8];
 }__attribute__((packed));
 
 /*

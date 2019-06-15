@@ -6,7 +6,7 @@
 #    By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/10 17:19:11 by agrumbac          #+#    #+#              #
-#    Updated: 2019/06/12 13:58:03 by spolowy          ###   ########.fr        #
+#    Updated: 2019/06/15 17:08:32 by ichkamo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRC =	famine.s                      \
 	infect/encrypt.s              \
 	infect/file_iterator.c        \
 	infect/find_entry.c           \
-	infect/check_if_infected.c    \
+	infect/can_infect.c           \
 	infect/infect.c               \
 	infect/iterators.c            \
 	infect/packer.c               \

