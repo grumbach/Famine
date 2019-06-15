@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   virus.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 06:36:21 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 09:42:14 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/12 18:55:14 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "famine.h"
+#include "syscall.h"
 
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof(*x))
 
