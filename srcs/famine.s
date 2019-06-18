@@ -82,6 +82,7 @@ mark_below:
 	push r11                   ; save entry addr    [rsp + 8]
 	push rdx                   ; save key           [rsp]
 ;------------------------------; Show-off
+%ifdef DEBUG
 	mov rax, 0x00000a2e2e2e2e59
 	push rax
 	mov rax, 0x444f4f572e2e2e2e
@@ -95,6 +96,7 @@ mark_below:
 	syscall
 
 	add rsp, 16
+%endif
 ;------------------------------; check if client behaves well (comment for debug)
 	call detect_spy
 	test rax, rax

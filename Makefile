@@ -52,7 +52,7 @@ override CFLAGS += -Wall -Wextra -MMD\
 	-fno-builtin -nostdlib -fpic
 	# -fsanitize=address,undefined
 
-ASFLAGS = -f elf64 -g
+override ASFLAGS += -f elf64
 
 LDFLAGS = -Iincludes/ -nostdlib -fpic
 	# -fsanitize=address,undefined
@@ -91,7 +91,7 @@ ${NAME}: ${OBJ}
 ${OBJDIR}/%.o: ${SRCDIR}/%.s
 	@echo ${Y}Compiling [$@]...${X}
 	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/infect
-	@${AS} ${ASFLAGS} -o $@ $<
+	${AS} ${ASFLAGS} -o $@ $<
 	@printf ${UP}${CUT}
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.c
@@ -103,7 +103,7 @@ ${OBJDIR}/%.o: ${SRCDIR}/%.c
 ############################### DEBUG ##########################################
 
 debug:
-	${MAKE} all CFLAGS:="-DDEBUG -g"
+	${MAKE} all CFLAGS:="-DDEBUG -g" ASFLAGS:="-dDEBUG -g"
 
 ############################## GENERAL #########################################
 
