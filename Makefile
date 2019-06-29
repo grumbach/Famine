@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         #
+#    By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/10 17:19:11 by agrumbac          #+#    #+#              #
-#    Updated: 2019/06/07 10:00:02 by agrumbac         ###   ########.fr        #
+#    Updated: 2019/06/15 17:08:32 by ichkamo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ NAME = famine
 
 SRC =	famine.s                      \
 	utils.c                       \
-	detect_spy.c                  \
 	syscall.c                     \
+	detect_spy.c                  \
 	decrypt.s                     \
 	infect/virus.c                \
 	infect/accessors.c            \
@@ -26,6 +26,7 @@ SRC =	famine.s                      \
 	infect/encrypt.s              \
 	infect/file_iterator.c        \
 	infect/find_entry.c           \
+	infect/can_infect.c           \
 	infect/infect.c               \
 	infect/iterators.c            \
 	infect/packer.c               \
@@ -45,13 +46,13 @@ OBJ = $(OBJC:.s=.o)
 
 DEP = $(addprefix ${OBJDIR}/, $(SRC:.c=.d))
 
-CFLAGS = -Wall -Wextra -MMD -g \
+override CFLAGS += -Wall -Wextra -MMD\
 	-fno-stack-protector \
 	-nodefaultlibs \
 	-fno-builtin -nostdlib -fpic
 	# -fsanitize=address,undefined
 
-ASFLAGS = -f elf64 -g
+override ASFLAGS += -f elf64
 
 LDFLAGS = -Iincludes/ -nostdlib -fpic
 	# -fsanitize=address,undefined
@@ -90,14 +91,19 @@ ${NAME}: ${OBJ}
 ${OBJDIR}/%.o: ${SRCDIR}/%.s
 	@echo ${Y}Compiling [$@]...${X}
 	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/infect
-	@${AS} ${ASFLAGS} -o $@ $<
+	${AS} ${ASFLAGS} -o $@ $<
 	@printf ${UP}${CUT}
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.c
 	@echo ${Y}Compiling [$@]...${X}
 	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/infect
-	@${CC} ${CFLAGS} ${LDFLAGS} -c -o $@ $<
+	${CC} ${CFLAGS} ${LDFLAGS} -c -o $@ $<
 	@printf ${UP}${CUT}
+
+############################### DEBUG ##########################################
+
+debug:
+	${MAKE} all CFLAGS:="-DDEBUG -g" ASFLAGS:="-dDEBUG -g"
 
 ############################## GENERAL #########################################
 

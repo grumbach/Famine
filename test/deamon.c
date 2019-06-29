@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   deamon.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/04 03:39:28 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/12 18:43:19 by jfortin          ###   ########.fr       */
+/*   Created: 2019/06/13 22:08:26 by jfortin           #+#    #+#             */
+/*   Updated: 2019/06/13 23:56:47 by jfortin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "famine.h"
-#include "syscall.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <time.h>
 
-int	_start(void)
+int	main(void)
 {
-	if (detect_spy() == false)
-		virus();
-	famine_exit(0);
-	__builtin_unreachable();
+	printf("deamon started\n");
+	daemon(1, 1);
+	while (42)
+		sleep(1);
 }

