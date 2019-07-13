@@ -91,13 +91,13 @@ ${NAME}: ${OBJ}
 ${OBJDIR}/%.o: ${SRCDIR}/%.s
 	@echo ${Y}Compiling [$@]...${X}
 	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/infect
-	${AS} ${ASFLAGS} -o $@ $<
+	@${AS} ${ASFLAGS} -o $@ $<
 	@printf ${UP}${CUT}
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.c
 	@echo ${Y}Compiling [$@]...${X}
 	@/bin/mkdir -p ${OBJDIR} ${OBJDIR}/infect
-	${CC} ${CFLAGS} ${LDFLAGS} -c -o $@ $<
+	@${CC} ${CFLAGS} ${LDFLAGS} -c -o $@ $<
 	@printf ${UP}${CUT}
 
 ############################### DEBUG ##########################################
