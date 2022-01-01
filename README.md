@@ -1,4 +1,4 @@
-# Famine [![Codacy Badge](https://api.codacy.com/project/badge/Grade/efc1afaa78b64fa399a860550e86d8a8)](https://app.codacy.com/app/agrumbac/Famine?utm_source=github.com&utm_medium=referral&utm_content=grumbach/Famine&utm_campaign=Badge_Grade_Dashboard)
+# Famine
 
 A packed Virus for Elf64 binaries
 
